@@ -30,7 +30,7 @@ a = 2
 b = 4
 
 #Variables
-
+M.x = Var()
 
 #Objective Function
 
