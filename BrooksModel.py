@@ -19,28 +19,26 @@ M = ConcreteModel()
 ## n => Numero de Proyectos
 n = 2
 N =RangeSet (0, n-1)
-## P => Tiempo final requerido para completar el proyecton tras cambiar el personal
-## T => Tiempo inicial requerido para completar el proyecto n
-## R => Retraso m ́aximo del proyecto n.
-## Ni => Personal inicial para el proyecto n.
-# Nf => Personal final para el proyecto n.
-#P=T = R = Ni = RangeSet(0, 1)
 
+## P => Tiempo final requerido para completar el proyecton tras cambiar el personal
 P = {
      0:0,
      1:0
      }
 
+## T => Tiempo inicial requerido para completar el proyecto n
 T = {
      0:8,
      1:12
      }
 
+## R => Retraso m ́aximo del proyecto n.
 R = {
      0:4,
      1:0
      }
 
+## Ni => Personal inicial para el proyecto n.
 Ni = {
       0:10,
       1:10
@@ -51,31 +49,11 @@ a = 2
 ## Constante de adelanto del proyecto.
 b = 4
 
-print (P) 
-#Ni[0]= 10
-
-#Ni[1] = 10
-
-
-#R[0] = 4
-
-#R[1] = 0
-
-#T[0] = 8
-
-#T[1] = 12
-
-
-
-
 #Variables
-<<<<<<< HEAD
 M.B = Var(T, domain= PositiveIntegers)
 
+## Nf => Personal final para el proyecto n.
 M.Nf = Var(N,domain = PositiveIntegers)
-=======
-M.x = Var()
->>>>>>> e93c893327498e66ae8b58d0e87229de1b1926a7
 
 P[0] = T[0]*((((M.Nf[1]-M.Nf[0])-(Ni[1]-Ni[0]))/2)+((a-b)*(M.Nf[0]-Ni[0]))) 
 
@@ -85,13 +63,6 @@ P[1] = T[1]*((a-b)*(M.Nf[1]-Ni[1]))
 M.obj = Objective(expr = sum(P[i] for i in N), sense = minimize )
 
 #Constraints
-#def retraso_total_rule(Model,i):
-#    return ((P[i] - T[i]) <= R[i])
-
-#M.retraso_total =Constraint(N, rule=retraso_total_rule)
-
-
-#M.no_reduccion_personal = Constraint(expr = (M.Nf[i]>=Ni[i] for i in N) )
 
 def reduccion_rule(Model,i):
     if i!=0:
