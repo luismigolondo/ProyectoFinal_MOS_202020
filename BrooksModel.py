@@ -69,9 +69,13 @@ print (P)
 
 
 #Variables
+<<<<<<< HEAD
 M.B = Var(T, domain= PositiveIntegers)
 
 M.Nf = Var(N,domain = PositiveIntegers)
+=======
+M.x = Var()
+>>>>>>> e93c893327498e66ae8b58d0e87229de1b1926a7
 
 P[0] = T[0]*((((M.Nf[1]-M.Nf[0])-(Ni[1]-Ni[0]))/2)+((a-b)*(M.Nf[0]-Ni[0]))) 
 
