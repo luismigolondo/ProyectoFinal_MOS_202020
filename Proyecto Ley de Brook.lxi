@@ -1,20 +1,26 @@
 B 3 C o m p i l a t i o n
-B 73 Equation Listing    SOLVE model1 Using MIP From line 58
-D 76 funcObjetivo
-D 81 tiempoFinal
-D 90 restPersonalFinal
-B 100 Column Listing      SOLVE model1 Using MIP From line 58
-E 103 P
-E 121 Nf
-E 139 z
-B 147 Model Statistics    SOLVE model1 Using MIP From line 58
-B 160 Solution Report     SOLVE model1 Using MIP From line 58
-F 199 funcObjetivo
-F 203 tiempoFinal
-F 211 restPersonalFinal
-G 219 P
-G 227 Nf
-G 237 z
-B 247 E x e c u t i o n
-I 249 z
-I 250 Nf
+B 86 Equation Listing    SOLVE model1 Using MIP From line 70
+D 89 funcObjetivo
+D 94 tiempoFinal
+D 101 tiempoFinalN1
+D 106 restPersonalFinal
+D 115 restRetrasoMaximo
+D 124 restAdelantoMinimo
+B 132 Column Listing      SOLVE model1 Using MIP From line 70
+E 135 P
+E 158 Nf
+E 176 z
+B 184 Model Statistics    SOLVE model1 Using MIP From line 70
+B 197 Solution Report     SOLVE model1 Using MIP From line 70
+F 236 funcObjetivo
+F 240 tiempoFinal
+F 247 tiempoFinalN1
+F 253 restPersonalFinal
+F 261 restRetrasoMaximo
+F 269 restAdelantoMinimo
+G 276 P
+G 284 Nf
+G 294 z
+B 304 E x e c u t i o n
+I 306 z
+I 307 Nf

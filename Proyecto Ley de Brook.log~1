@@ -1,90 +1,60 @@
---- Job Proyecto Ley de Brook.gms Start 11/26/20 19:40:25 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
+--- Job Proyecto Ley de Brook.gms Start 11/26/20 21:43:10 32.1.0 r75a5b5d DEX-DEG x86 64bit/Mac OS X
 --- Applying:
-    C:\GAMS\32\gmsprmNT.txt
+    /Library/Frameworks/GAMS.framework/Versions/32/Resources/gmsprmun.txt
 --- GAMS Parameters defined
-    Input "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms"
+    Input "/Users/luisgomez/Documents/Clases Universidad/Semestre 7/MOS/Proyecto Final/ProyectoFinal_MOS_202020/Proyecto Ley de Brook.gms"
     PageSize 0
-    ScrDir "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\225a\"
-    SysDir C:\GAMS\32\
+    ScrDir "/Users/luisgomez/Documents/Clases Universidad/Semestre 7/MOS/Proyecto Final/ProyectoFinal_MOS_202020/225a/"
+    SysDir /Library/Frameworks/GAMS.framework/Versions/32/Resources/
     LogOption 3
     ErrMsg 1
     ErrorLog 99
     IDE 1
     LstTitleLeftAligned 1
 GAMS 32.1.0   Copyright (C) 1987-2020 GAMS Development. All rights reserved
-Licensee: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
-          Universidad de los Andes, Colombia                       DL014815
-          C:\Users\JulianDavid\Documents\GAMS\gamslice.txt
-          jd.mendozar@uniandes.edu.co, Julian David Mendoza Ruiz           
+Licensee: GAMS Demo license for Luis Miguel Gomez        G200819|0002CO-GEN
+          Universidad de los Andes, Colombia                       DL015137
+          /Users/luisgomez/Library/Application Support/GAMS/gamslice.txt
+          lm.gomezl@uniandes.edu.co, Luis Miguel Gomez                     
           Demo license for demonstration and instructional purposes only
 --- Starting compilation
---- Proyecto Ley de Brook.gms(63) 3 Mb
---- Starting execution: elapsed 0:00:00.003
---- Proyecto Ley de Brook.gms(56) 4 Mb
+--- Proyecto Ley de Brook.gms(70) 3 Mb
+--- Starting execution: elapsed 0:00:00.006
+--- Proyecto Ley de Brook.gms(63) 4 Mb
 --- Generating MIP model model1
---- Proyecto Ley de Brook.gms(58) 4 Mb
----   7 rows  7 columns  13 non-zeroes
+--- Proyecto Ley de Brook.gms(65) 4 Mb
+---   10 rows  7 columns  16 non-zeroes
 ---   6 discrete-columns
---- Executing CPLEX (Solvelink=2): elapsed 0:00:00.008
-
-IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.017
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 DEG x86 64bit/Mac OS X 
 *** This solver runs with a demo license. No commercial use.
 Cplex 12.10.0.0
-
 Reading data...
 Starting Cplex...
 Space for names approximately 0.00 Mb
 Use option 'names no' to turn use of names off
-Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de2ae
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de
 CPXPARAM_Advance                                 0
 CPXPARAM_Simplex_Display                         2
 CPXPARAM_Threads                                 1
 CPXPARAM_Parallel                                1
 CPXPARAM_MIP_Display                             4
 CPXPARAM_MIP_Tolerances_AbsMIPGap                0
-CPXPARAM_WorkDir                                 "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci%f3n y optimizaci%f3n\Proyecto\ProyectoFinal_MOS_202020\225a\"
-Tried aggregator 2 times.
-MIP Presolve eliminated 7 rows and 7 columns.
-MIP Presolve added 3 rows and 3 columns.
-Aggregator did 3 substitutions.
-All rows and columns eliminated.
-Presolve time = 0.00 sec. (0.01 ticks)
-
+CPXPARAM_WorkDir                                 "/Users/luisgomez/Documents/Clases Universidad/Semestre 7/MOS/Proyecto Final/ProyectoFinal_MOS_202020/225a/"
+Row 'tiempoFinalN1(p1)' infeasible, all entries at implied bounds.
+Presolve time = 0.00 sec. (0.00 ticks)
 Root node processing (before b&c):
-  Real time             =    0.00 sec. (0.01 ticks)
+  Real time             =    0.00 sec. (0.00 ticks)
 Sequential b&c:
   Real time             =    0.00 sec. (0.00 ticks)
                           ------------
-Total (root+branch&cut) =    0.00 sec. (0.01 ticks)
-MIP status(101): integer optimal solution
-Cplex Time: 0.00sec (det. 0.01 ticks)
-Fixing integer variables, and solving final LP...
-Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de2ae
-CPXPARAM_Advance                                 2
-CPXPARAM_Simplex_Display                         2
-CPXPARAM_Threads                                 1
-CPXPARAM_Parallel                                1
-CPXPARAM_MIP_Display                             4
-CPXPARAM_MIP_Tolerances_AbsMIPGap                0
-CPXPARAM_WorkDir                                 "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci%f3n y optimizaci%f3n\Proyecto\ProyectoFinal_MOS_202020\225a\"
-Tried aggregator 1 time.
-LP Presolve eliminated 7 rows and 7 columns.
-All rows and columns eliminated.
-Presolve time = 0.00 sec. (0.00 ticks)
-Fixed MIP status(1): optimal
+Total (root+branch&cut) =    0.00 sec. (0.00 ticks)
+MIP status(103): integer infeasible
 Cplex Time: 0.00sec (det. 0.00 ticks)
-
-Proven optimal solution.
-
-MIP Solution:           36.000000    (0 iterations, 0 nodes)
-Final Solve:            36.000000    (0 iterations)
-
-Best possible:          36.000000
-Absolute gap:            0.000000
-Relative gap:            0.000000
-
+CPLEX Error  1217: No solution exists.
+Problem is integer infeasible.
 --- Reading solution for model model1
---- Executing after solve: elapsed 0:00:00.045
---- Proyecto Ley de Brook.gms(62) 4 Mb
+--- Executing after solve: elapsed 0:00:00.054
+--- Proyecto Ley de Brook.gms(69) 4 Mb
 *** Status: Normal completion
---- Job Proyecto Ley de Brook.gms Stop 11/26/20 19:40:25 elapsed 0:00:00.045
+--- Job Proyecto Ley de Brook.gms Stop 11/26/20 21:43:10 elapsed 0:00:00.055

@@ -1,4 +1,4 @@
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 1
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -7,70 +7,83 @@ C o m p i l a t i o n
    2  ***C贸digos: 201729597 y 201730830
    3  *** Constantes *******************************************
    4   
-   5  *Tiempo de adaptacion de un nuevo integrante al proyecto
-   6  *$set a = 2;
-   7  Scalar a /2/
-   8  *Constante de adelanto del proyecto.
-  10   
-  11  ***Sets***************************************************
-  12   
-  13  Set proyectos Proyectos del problema
-  14   /p1*p3/;
-  15   
-  16  ***Parametros      ****************************
-  17   
-  18  parameter T(proyectos) Tiempo inicial requerido para cumplir el proyecto n.
-  19      /p1 10, p2 12 , p3 14/;
-  20   
-  21  parameter Ni(proyectos) Personal inicial del proyecto n.
-  22      /p1 10, p2 10, p3 10/;
-  23   
-  24  parameter R(proyectos) Retraso m谩ximo que puede tener el proyecto n.
-  25      /p1 2, p2 2, p3 2/;
-  26   
-  27  parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
-  28      /p1 0, p2 0, p3 0/;
-  29   
-  30  ***Variables*********************************************
-  31  Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
-  32   
-  33  Integer variable Nf(proyectos) Personal final del proyecto n.
-  34   
-  35  *Positive variable B(proyectos) Periodo en que se agrega personal al proyecto n.
-  36   
-  37  variable z Variable de la funci贸n objetivo
-  38   
-  39  Equations
-  40   
-  41  funcObjetivo Funci贸n objetivo del problema
-  42   
-  43  tiempoFinal(proyectos) Tiempo final de cada proyecto
-  44   
-  45  restPersonalFinal(proyectos) Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
-  46  ;
+   5  Scalar
+   6      a Tiempo de adaptacion de un nuevo integrante al proyecto /2/
+   7      c Constante de adelanto del proyecto. /3/
+   8      m Adelanto minimo para cualquier proyecto. /0/;
+   9   
+  10  ***Sets***************************************************
+  11   
+  12  Set proyectos Proyectos del problema
+  13   /p1*p3/;
+  14   
+  15  ***Parametros      ****************************
+  16   
+  17  parameter T(proyectos) Tiempo inicial requerido para cumplir el proyecto n.
+  18      /p1 10, p2 12 , p3 14/;
+  19   
+  20  parameter Ni(proyectos) Personal inicial del proyecto n.
+  21      /p1 10, p2 10, p3 10/;
+  22   
+  23  parameter R(proyectos) Retraso m谩ximo que puede tener el proyecto n.
+  24      /p1 2, p2 2, p3 2/;
+  25   
+  26  parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
+  27      /p1 0, p2 0, p3 0/;
+  28   
+  29  ***Variables*********************************************
+  30  Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
+  31   
+  32  Integer variable Nf(proyectos) Personal final del proyecto n.
+  33   
+  34  *Positive variable B(proyectos) Periodo en que se agrega personal al proyecto n.
+  35   
+  36  variable z Variable de la funci贸n objetivo
+  37   
+  38  Equations
+  39   
+  40  funcObjetivo Funci贸n objetivo del problema
+  41   
+  42  tiempoFinal(proyectos) Tiempo final de cada proyecto
+  43   
+  44  tiempoFinalN1(proyectos) Tiempo final de cada proyecto mas de N1.
+  45   
+  46  restPersonalFinal(proyectos) Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
   47   
-  48  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
+  48  restRetrasoMaximo(proyectos) Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
   49   
-  50  tiempoFinal(proyectos) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos));
+  50  restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
   51   
-  52  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
+  52  ;
   53   
-  54  Model model1 /all/;
+  54  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
   55   
-  56  option mip = CPLEX ;
+  56  tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni(proyectos-1))*c;
   57   
-  58  solve model1 using mip minimizing z;
+  58  tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos));
   59   
-  60  Display z.l;
+  60  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
   61   
-  62  Display Nf.l;
+  62  restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) - 1;
   63   
+  64  restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. P(proyectos) - T(proyectos) =g= m;
+  65   
+  66  Model model1 /all/;
+  67   
+  68  option mip = CPLEX ;
+  69   
+  70  solve model1 using mip minimizing z;
+  71   
+  72  Display z.l;
+  73   
+  74  Display Nf.l;
+  75   
 
 
-COMPILATION TIME     =        0.000 SECONDS      3 MB  32.1.0 r75a5b5d WEX-WEI
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 2
+COMPILATION TIME     =        0.001 SECONDS      3 MB  32.1.0 r75a5b5d DEX-DEG
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE model1 Using MIP From line 58
+Equation Listing    SOLVE model1 Using MIP From line 70
 
 
 ---- funcObjetivo  =E=  Funci贸n objetivo del problema
@@ -80,11 +93,14 @@ funcObjetivo..  - P(p1) - P(p2) - P(p3) + z =E= 0 ; (LHS = 0)
 
 ---- tiempoFinal  =E=  Tiempo final de cada proyecto
 
-tiempoFinal(p1)..  P(p1) - 2*Nf(p1) =E= -10 ; (LHS = 0, INFES = 10 ****)
-     
 tiempoFinal(p2)..  P(p2) - 2*Nf(p2) =E= -8 ; (LHS = 0, INFES = 8 ****)
      
 tiempoFinal(p3)..  P(p3) - 2*Nf(p3) =E= -6 ; (LHS = 0, INFES = 6 ****)
+     
+
+---- tiempoFinalN1  =E=  Tiempo final de cada proyecto mas de N1.
+
+tiempoFinalN1(p1)..  P(p1) - 2*Nf(p1) =E= -10 ; (LHS = 0, INFES = 10 ****)
      
 
 ---- restPersonalFinal  =G=  Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
@@ -95,9 +111,25 @@ restPersonalFinal(p2)..  Nf(p2) =G= 10 ; (LHS = 0, INFES = 10 ****)
      
 restPersonalFinal(p3)..  Nf(p3) =G= 10 ; (LHS = 0, INFES = 10 ****)
      
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 3
+
+---- restRetrasoMaximo  =L=  Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
+
+restRetrasoMaximo(p1)..  P(p1) =L= 11 ; (LHS = 0)
+     
+restRetrasoMaximo(p2)..  P(p2) =L= 13 ; (LHS = 0)
+     
+restRetrasoMaximo(p3)..  P(p3) =L= 15 ; (LHS = 0)
+     
+
+---- restAdelantoMinimo  =G=  Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
+
+restAdelantoMinimo(p2)..  P(p2) =G= 12 ; (LHS = 0, INFES = 12 ****)
+     
+restAdelantoMinimo(p3)..  P(p3) =G= 14 ; (LHS = 0, INFES = 14 ****)
+     
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE model1 Using MIP From line 58
+Column Listing      SOLVE model1 Using MIP From line 70
 
 
 ---- P  Tiempo final requerido para cumplir el proyecto n.
@@ -105,24 +137,29 @@ Column Listing      SOLVE model1 Using MIP From line 58
 P(p1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       funcObjetivo
-        1       tiempoFinal(p1)
+        1       tiempoFinalN1(p1)
+        1       restRetrasoMaximo(p1)
 
 P(p2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       funcObjetivo
         1       tiempoFinal(p2)
+        1       restRetrasoMaximo(p2)
+        1       restAdelantoMinimo(p2)
 
 P(p3)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -1       funcObjetivo
         1       tiempoFinal(p3)
+        1       restRetrasoMaximo(p3)
+        1       restAdelantoMinimo(p3)
 
 
 ---- Nf  Personal final del proyecto n.
 
 Nf(p1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-       -2       tiempoFinal(p1)
+       -2       tiempoFinalN1(p1)
         1       restPersonalFinal(p1)
 
 Nf(p2)
@@ -142,29 +179,29 @@ z
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       funcObjetivo
 
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 4
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE model1 Using MIP From line 58
+Model Statistics    SOLVE model1 Using MIP From line 70
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS           3     SINGLE EQUATIONS            7
+BLOCKS OF EQUATIONS           6     SINGLE EQUATIONS           12
 BLOCKS OF VARIABLES           3     SINGLE VARIABLES            7
-NON ZERO ELEMENTS            13     DISCRETE VARIABLES          6
+NON ZERO ELEMENTS            18     DISCRETE VARIABLES          6
 
 
-GENERATION TIME      =        0.015 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 5
+GENERATION TIME      =        0.012 SECONDS      4 MB  32.1.0 r75a5b5d DEX-DEG
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE model1 Using MIP From line 58
+Solution Report     SOLVE model1 Using MIP From line 70
 
 
                S O L V E      S U M M A R Y
 
      MODEL   model1              OBJECTIVE  z
      TYPE    MIP                 DIRECTION  MINIMIZE
-     SOLVER  CPLEX               FROM LINE  58
+     SOLVER  CPLEX               FROM LINE  70
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      1 Optimal                   
@@ -173,7 +210,7 @@ Solution Report     SOLVE model1 Using MIP From line 58
  RESOURCE USAGE, LIMIT          0.016 10000000000.000
  ITERATION COUNT, LIMIT         0    2147483647
 
-IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 DEG x86 64bit/Mac OS X 
 *** This solver runs with a demo license. No commercial use.
 Cplex 12.10.0.0
 
@@ -183,7 +220,7 @@ MIP status(101): integer optimal solution
 Cplex Time: 0.00sec (det. 0.01 ticks)
 Fixing integer variables, and solving final LP...
 Fixed MIP status(1): optimal
-Cplex Time: 0.00sec (det. 0.00 ticks)
+Cplex Time: 0.00sec (det. 0.01 ticks)
 Proven optimal solution.
 
 MIP Solution:           36.000000    (0 iterations, 0 nodes)
@@ -204,9 +241,14 @@ Relative gap:            0.000000
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1       -10.0000       -10.0000       -10.0000          .          
 p2        -8.0000        -8.0000        -8.0000          .          
 p3        -6.0000        -6.0000        -6.0000          .          
+
+---- EQU tiempoFinalN1  Tiempo final de cada proyecto mas de N1.
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1       -10.0000       -10.0000       -10.0000          .          
 
 ---- EQU restPersonalFinal  Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
 
@@ -215,6 +257,21 @@ p3        -6.0000        -6.0000        -6.0000          .
 p1        10.0000        10.0000        +INF             .          
 p2        10.0000        10.0000        +INF             .          
 p3        10.0000        10.0000        +INF             .          
+
+---- EQU restRetrasoMaximo  Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1        -INF           10.0000        11.0000          .          
+p2        -INF           12.0000        13.0000          .          
+p3        -INF           14.0000        15.0000          .          
+
+---- EQU restAdelantoMinimo  Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p2        12.0000        12.0000        +INF             .          
+p3        14.0000        14.0000        +INF             .          
 
 ---- VAR P  Tiempo final requerido para cumplir el proyecto n.
 
@@ -242,27 +299,27 @@ p3          .            10.0000        +INF            EPS
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 6
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----     60 VARIABLE z.L                   =       36.000  Variable de la funci贸n objetivo
+----     72 VARIABLE z.L                   =       36.000  Variable de la funci贸n objetivo
 
-----     62 VARIABLE Nf.L  Personal final del proyecto n.
+----     74 VARIABLE Nf.L  Personal final del proyecto n.
 
 p1 10.000,    p2 10.000,    p3 10.000
 
 
 
-EXECUTION TIME       =        0.047 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
+EXECUTION TIME       =        0.057 SECONDS      4 MB  32.1.0 r75a5b5d DEX-DEG
 
 
-USER: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
-      Universidad de los Andes, Colombia                       DL014815
+USER: GAMS Demo license for Luis Miguel Gomez        G200819|0002CO-GEN
+      Universidad de los Andes, Colombia                       DL015137
 
 
 **** FILE SUMMARY
 
-Input      C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms
-Output     C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.lst
+Input      /Users/luisgomez/Documents/Clases Universidad/Semestre 7/MOS/Proyecto Final/ProyectoFinal_MOS_202020/Proyecto Ley de Brook.gms
+Output     /Users/luisgomez/Documents/Clases Universidad/Semestre 7/MOS/Proyecto Final/ProyectoFinal_MOS_202020/Proyecto Ley de Brook.lst

@@ -2,11 +2,10 @@
 ***Códigos: 201729597 y 201730830
 *** Constantes *******************************************
 
-*Tiempo de adaptacion de un nuevo integrante al proyecto
-*$set a = 2;
-Scalar a /2/
-*Constante de adelanto del proyecto.
-$set b = 3
+Scalar
+    a Tiempo de adaptacion de un nuevo integrante al proyecto /2/
+    c Constante de adelanto del proyecto. /3/
+    m Adelanto minimo para cualquier proyecto. /0/;
 
 ***Sets***************************************************
 
@@ -42,14 +41,27 @@ funcObjetivo Función objetivo del problema
 
 tiempoFinal(proyectos) Tiempo final de cada proyecto
 
+tiempoFinalN1(proyectos) Tiempo final de cada proyecto mas de N1.
+
 restPersonalFinal(proyectos) Restricción de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
+
+restRetrasoMaximo(proyectos) Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
+
+restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
+
 ;
 
 funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
 
-tiempoFinal(proyectos) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos));
+tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni(proyectos-1))*c;
+
+tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos));
 
 restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
+
+restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) - 1;
+
+restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. P(proyectos) - T(proyectos) =g= m;
 
 Model model1 /all/;
 
