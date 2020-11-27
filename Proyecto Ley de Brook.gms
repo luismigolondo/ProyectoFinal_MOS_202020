@@ -49,6 +49,8 @@ restRetrasoMaximo(proyectos) Restriccion para que el tiempo final - inicial del 
 
 restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
 
+restPersonal(proyectos) Restriccion para que el personal final sea mayor o igual que el inicial. 
+
 ;
 
 funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
@@ -62,6 +64,8 @@ restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
 restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) - 1;
 
 restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. P(proyectos) - T(proyectos) =g= m;
+
+restPersonal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
 
 Model model1 /all/;
 

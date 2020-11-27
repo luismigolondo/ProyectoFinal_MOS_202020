@@ -1,4 +1,4 @@
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 1
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:53:29 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -54,36 +54,40 @@ C o m p i l a t i o n
   49   
   50  restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
   51   
-  52  ;
+  52  restPersonal(proyectos) Restriccion para que el personal final sea mayor o igual que el inicial.
   53   
-  54  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
+  54  ;
   55   
-  56  tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni(proyectos-1))*c;
+  56  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
   57   
-  58  tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos));
+  58  tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni(proyectos-1))*c;
   59   
-  60  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
+  60  tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos));
   61   
-  62  restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) - 1;
+  62  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
   63   
-  64  restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. P(proyectos) - T(proyectos) =g= m;
+  64  restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) - 1;
   65   
-  66  Model model1 /all/;
+  66  restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. P(proyectos) - T(proyectos) =g= m;
   67   
-  68  option mip = CPLEX ;
+  68  restPersonal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
   69   
-  70  solve model1 using mip minimizing z;
+  70  Model model1 /all/;
   71   
-  72  Display z.l;
+  72  option mip = CPLEX ;
   73   
-  74  Display Nf.l;
+  74  solve model1 using mip minimizing z;
   75   
+  76  Display z.l;
+  77   
+  78  Display Nf.l;
+  79   
 
 
 COMPILATION TIME     =        0.001 SECONDS      3 MB  32.1.0 r75a5b5d DEX-DEG
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 2
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:53:29 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE model1 Using MIP From line 70
+Equation Listing    SOLVE model1 Using MIP From line 74
 
 
 ---- funcObjetivo  =E=  Función objetivo del problema
@@ -127,9 +131,18 @@ restAdelantoMinimo(p2)..  P(p2) =G= 12 ; (LHS = 0, INFES = 12 ****)
      
 restAdelantoMinimo(p3)..  P(p3) =G= 14 ; (LHS = 0, INFES = 14 ****)
      
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 3
+
+---- restPersonal  =G=  Restriccion para que el personal final sea mayor o igual que el inicial.
+
+restPersonal(p1)..  Nf(p1) =G= 10 ; (LHS = 0, INFES = 10 ****)
+     
+restPersonal(p2)..  Nf(p2) =G= 10 ; (LHS = 0, INFES = 10 ****)
+     
+restPersonal(p3)..  Nf(p3) =G= 10 ; (LHS = 0, INFES = 10 ****)
+     
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:53:29 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE model1 Using MIP From line 70
+Column Listing      SOLVE model1 Using MIP From line 74
 
 
 ---- P  Tiempo final requerido para cumplir el proyecto n.
@@ -161,16 +174,19 @@ Nf(p1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -2       tiempoFinalN1(p1)
         1       restPersonalFinal(p1)
+        1       restPersonal(p1)
 
 Nf(p2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -2       tiempoFinal(p2)
         1       restPersonalFinal(p2)
+        1       restPersonal(p2)
 
 Nf(p3)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -2       tiempoFinal(p3)
         1       restPersonalFinal(p3)
+        1       restPersonal(p3)
 
 
 ---- z  Variable de la función objetivo
@@ -179,35 +195,35 @@ z
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       funcObjetivo
 
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 4
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:53:29 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE model1 Using MIP From line 70
+Model Statistics    SOLVE model1 Using MIP From line 74
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS           6     SINGLE EQUATIONS           12
+BLOCKS OF EQUATIONS           7     SINGLE EQUATIONS           15
 BLOCKS OF VARIABLES           3     SINGLE VARIABLES            7
-NON ZERO ELEMENTS            18     DISCRETE VARIABLES          6
+NON ZERO ELEMENTS            21     DISCRETE VARIABLES          6
 
 
-GENERATION TIME      =        0.012 SECONDS      4 MB  32.1.0 r75a5b5d DEX-DEG
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 5
+GENERATION TIME      =        0.009 SECONDS      4 MB  32.1.0 r75a5b5d DEX-DEG
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:53:29 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE model1 Using MIP From line 70
+Solution Report     SOLVE model1 Using MIP From line 74
 
 
                S O L V E      S U M M A R Y
 
      MODEL   model1              OBJECTIVE  z
      TYPE    MIP                 DIRECTION  MINIMIZE
-     SOLVER  CPLEX               FROM LINE  70
+     SOLVER  CPLEX               FROM LINE  74
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      1 Optimal                   
 **** OBJECTIVE VALUE               36.0000
 
- RESOURCE USAGE, LIMIT          0.016 10000000000.000
+ RESOURCE USAGE, LIMIT          0.014 10000000000.000
  ITERATION COUNT, LIMIT         0    2147483647
 
 IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 DEG x86 64bit/Mac OS X 
@@ -273,6 +289,14 @@ p3        -INF           14.0000        15.0000          .
 p2        12.0000        12.0000        +INF             .          
 p3        14.0000        14.0000        +INF             .          
 
+---- EQU restPersonal  Restriccion para que el personal final sea mayor o igual que el inicial.
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1        10.0000        10.0000        +INF             .          
+p2        10.0000        10.0000        +INF             .          
+p3        10.0000        10.0000        +INF             .          
+
 ---- VAR P  Tiempo final requerido para cumplir el proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
@@ -299,20 +323,20 @@ p3          .            10.0000        +INF            EPS
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:49:33 Page 6
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 DEX-DEG x86 64bit/Mac OS X - 11/26/20 21:53:29 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----     72 VARIABLE z.L                   =       36.000  Variable de la función objetivo
+----     76 VARIABLE z.L                   =       36.000  Variable de la función objetivo
 
-----     74 VARIABLE Nf.L  Personal final del proyecto n.
+----     78 VARIABLE Nf.L  Personal final del proyecto n.
 
 p1 10.000,    p2 10.000,    p3 10.000
 
 
 
-EXECUTION TIME       =        0.057 SECONDS      4 MB  32.1.0 r75a5b5d DEX-DEG
+EXECUTION TIME       =        0.054 SECONDS      4 MB  32.1.0 r75a5b5d DEX-DEG
 
 
 USER: GAMS Demo license for Luis Miguel Gomez        G200819|0002CO-GEN
