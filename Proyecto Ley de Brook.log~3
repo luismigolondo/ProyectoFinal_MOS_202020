@@ -1,0 +1,43 @@
+--- Job Proyecto Ley de Brook.gms Start 11/26/20 19:37:30 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\32\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms"
+    PageSize 0
+    ScrDir "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\225a\"
+    SysDir C:\GAMS\32\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+GAMS 32.1.0   Copyright (C) 1987-2020 GAMS Development. All rights reserved
+Licensee: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
+          Universidad de los Andes, Colombia                       DL014815
+          C:\Users\JulianDavid\Documents\GAMS\gamslice.txt
+          jd.mendozar@uniandes.edu.co, Julian David Mendoza Ruiz           
+          Demo license for demonstration and instructional purposes only
+--- Starting compilation
+--- Proyecto Ley de Brook.gms(50) 3 Mb 1 Error
+*** Error 140 in C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms
+    Unknown symbol
+--- Proyecto Ley de Brook.gms(58) 3 Mb 2 Errors
+*** Error 257 in C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms
+    Solve statement not checked because of previous errors
+--- Proyecto Ley de Brook.gms(60) 3 Mb 3 Errors
+*** Error 141 in C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- Proyecto Ley de Brook.gms(62) 3 Mb 4 Errors
+*** Error 141 in C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms
+    Symbol declared but no values have been assigned. Check for missing
+       data definition, assignment, data loading or implicit assignment
+       via a solve statement.
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- Proyecto Ley de Brook.gms(63) 3 Mb 4 Errors
+*** Status: Compilation error(s)
+--- Job Proyecto Ley de Brook.gms Stop 11/26/20 19:37:30 elapsed 0:00:00.006

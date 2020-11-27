@@ -1,0 +1,90 @@
+--- Job Proyecto Ley de Brook.gms Start 11/26/20 19:40:49 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\32\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms"
+    PageSize 0
+    ScrDir "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci�n y optimizaci�n\Proyecto\ProyectoFinal_MOS_202020\225a\"
+    SysDir C:\GAMS\32\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+GAMS 32.1.0   Copyright (C) 1987-2020 GAMS Development. All rights reserved
+Licensee: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
+          Universidad de los Andes, Colombia                       DL014815
+          C:\Users\JulianDavid\Documents\GAMS\gamslice.txt
+          jd.mendozar@uniandes.edu.co, Julian David Mendoza Ruiz           
+          Demo license for demonstration and instructional purposes only
+--- Starting compilation
+--- Proyecto Ley de Brook.gms(63) 3 Mb
+--- Starting execution: elapsed 0:00:00.004
+--- Proyecto Ley de Brook.gms(56) 4 Mb
+--- Generating MIP model model1
+--- Proyecto Ley de Brook.gms(58) 4 Mb
+---   7 rows  7 columns  13 non-zeroes
+---   6 discrete-columns
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.008
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+Reading data...
+Starting Cplex...
+Space for names approximately 0.00 Mb
+Use option 'names no' to turn use of names off
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de2ae
+CPXPARAM_Advance                                 0
+CPXPARAM_Simplex_Display                         2
+CPXPARAM_Threads                                 1
+CPXPARAM_Parallel                                1
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+CPXPARAM_WorkDir                                 "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci%f3n y optimizaci%f3n\Proyecto\ProyectoFinal_MOS_202020\225a\"
+Tried aggregator 2 times.
+MIP Presolve eliminated 7 rows and 7 columns.
+MIP Presolve added 3 rows and 3 columns.
+Aggregator did 3 substitutions.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.01 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0.00 sec. (0.01 ticks)
+Sequential b&c:
+  Real time             =    0.00 sec. (0.00 ticks)
+                          ------------
+Total (root+branch&cut) =    0.00 sec. (0.01 ticks)
+MIP status(101): integer optimal solution
+Cplex Time: 0.00sec (det. 0.01 ticks)
+Fixing integer variables, and solving final LP...
+Version identifier: 12.10.0.0 | 2019-11-26 | 843d4de2ae
+CPXPARAM_Advance                                 2
+CPXPARAM_Simplex_Display                         2
+CPXPARAM_Threads                                 1
+CPXPARAM_Parallel                                1
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+CPXPARAM_WorkDir                                 "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci%f3n y optimizaci%f3n\Proyecto\ProyectoFinal_MOS_202020\225a\"
+Tried aggregator 1 time.
+LP Presolve eliminated 7 rows and 7 columns.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.00 ticks)
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.00 ticks)
+
+Proven optimal solution.
+
+MIP Solution:           36.000000    (0 iterations, 0 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- Reading solution for model model1
+--- Executing after solve: elapsed 0:00:00.046
+--- Proyecto Ley de Brook.gms(62) 4 Mb
+*** Status: Normal completion
+--- Job Proyecto Ley de Brook.gms Stop 11/26/20 19:40:49 elapsed 0:00:00.047

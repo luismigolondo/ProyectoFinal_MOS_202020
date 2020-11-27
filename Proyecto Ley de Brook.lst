@@ -1,0 +1,268 @@
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  *** Luis Miguel Gomez Londo帽o y Julian David Mendoza Ruiz
+   2  ***C贸digos: 201729597 y 201730830
+   3  *** Constantes *******************************************
+   4   
+   5  *Tiempo de adaptacion de un nuevo integrante al proyecto
+   6  *$set a = 2;
+   7  Scalar a /2/
+   8  *Constante de adelanto del proyecto.
+  10   
+  11  ***Sets***************************************************
+  12   
+  13  Set proyectos Proyectos del problema
+  14   /p1*p3/;
+  15   
+  16  ***Parametros      ****************************
+  17   
+  18  parameter T(proyectos) Tiempo inicial requerido para cumplir el proyecto n.
+  19      /p1 10, p2 12 , p3 14/;
+  20   
+  21  parameter Ni(proyectos) Personal inicial del proyecto n.
+  22      /p1 10, p2 10, p3 10/;
+  23   
+  24  parameter R(proyectos) Retraso m谩ximo que puede tener el proyecto n.
+  25      /p1 2, p2 2, p3 2/;
+  26   
+  27  parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
+  28      /p1 0, p2 0, p3 0/;
+  29   
+  30  ***Variables*********************************************
+  31  Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
+  32   
+  33  Integer variable Nf(proyectos) Personal final del proyecto n.
+  34   
+  35  *Positive variable B(proyectos) Periodo en que se agrega personal al proyecto n.
+  36   
+  37  variable z Variable de la funci贸n objetivo
+  38   
+  39  Equations
+  40   
+  41  funcObjetivo Funci贸n objetivo del problema
+  42   
+  43  tiempoFinal(proyectos) Tiempo final de cada proyecto
+  44   
+  45  restPersonalFinal(proyectos) Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
+  46  ;
+  47   
+  48  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
+  49   
+  50  tiempoFinal(proyectos) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos));
+  51   
+  52  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
+  53   
+  54  Model model1 /all/;
+  55   
+  56  option mip = CPLEX ;
+  57   
+  58  solve model1 using mip minimizing z;
+  59   
+  60  Display z.l;
+  61   
+  62  Display Nf.l;
+  63   
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  32.1.0 r75a5b5d WEX-WEI
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE model1 Using MIP From line 58
+
+
+---- funcObjetivo  =E=  Funci贸n objetivo del problema
+
+funcObjetivo..  - P(p1) - P(p2) - P(p3) + z =E= 0 ; (LHS = 0)
+     
+
+---- tiempoFinal  =E=  Tiempo final de cada proyecto
+
+tiempoFinal(p1)..  P(p1) - 2*Nf(p1) =E= -10 ; (LHS = 0, INFES = 10 ****)
+     
+tiempoFinal(p2)..  P(p2) - 2*Nf(p2) =E= -8 ; (LHS = 0, INFES = 8 ****)
+     
+tiempoFinal(p3)..  P(p3) - 2*Nf(p3) =E= -6 ; (LHS = 0, INFES = 6 ****)
+     
+
+---- restPersonalFinal  =G=  Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
+
+restPersonalFinal(p1)..  Nf(p1) =G= 10 ; (LHS = 0, INFES = 10 ****)
+     
+restPersonalFinal(p2)..  Nf(p2) =G= 10 ; (LHS = 0, INFES = 10 ****)
+     
+restPersonalFinal(p3)..  Nf(p3) =G= 10 ; (LHS = 0, INFES = 10 ****)
+     
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE model1 Using MIP From line 58
+
+
+---- P  Tiempo final requerido para cumplir el proyecto n.
+
+P(p1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -1       funcObjetivo
+        1       tiempoFinal(p1)
+
+P(p2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -1       funcObjetivo
+        1       tiempoFinal(p2)
+
+P(p3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -1       funcObjetivo
+        1       tiempoFinal(p3)
+
+
+---- Nf  Personal final del proyecto n.
+
+Nf(p1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2       tiempoFinal(p1)
+        1       restPersonalFinal(p1)
+
+Nf(p2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2       tiempoFinal(p2)
+        1       restPersonalFinal(p2)
+
+Nf(p3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2       tiempoFinal(p3)
+        1       restPersonalFinal(p3)
+
+
+---- z  Variable de la funci贸n objetivo
+
+z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       funcObjetivo
+
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE model1 Using MIP From line 58
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           3     SINGLE EQUATIONS            7
+BLOCKS OF VARIABLES           3     SINGLE VARIABLES            7
+NON ZERO ELEMENTS            13     DISCRETE VARIABLES          6
+
+
+GENERATION TIME      =        0.015 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE model1 Using MIP From line 58
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   model1              OBJECTIVE  z
+     TYPE    MIP                 DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  58
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      1 Optimal                   
+**** OBJECTIVE VALUE               36.0000
+
+ RESOURCE USAGE, LIMIT          0.016 10000000000.000
+ ITERATION COUNT, LIMIT         0    2147483647
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+Space for names approximately 0.00 Mb
+Use option 'names no' to turn use of names off
+MIP status(101): integer optimal solution
+Cplex Time: 0.00sec (det. 0.01 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.00 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (0 iterations, 0 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU funcObjet~          .              .              .             1.0000      
+
+  funcObjetivo  Funci贸n objetivo del problema
+
+---- EQU tiempoFinal  Tiempo final de cada proyecto
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1       -10.0000       -10.0000       -10.0000          .          
+p2        -8.0000        -8.0000        -8.0000          .          
+p3        -6.0000        -6.0000        -6.0000          .          
+
+---- EQU restPersonalFinal  Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1        10.0000        10.0000        +INF             .          
+p2        10.0000        10.0000        +INF             .          
+p3        10.0000        10.0000        +INF             .          
+
+---- VAR P  Tiempo final requerido para cumplir el proyecto n.
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1          .            10.0000        +INF            1.0000      
+p2          .            12.0000        +INF            1.0000      
+p3          .            14.0000        +INF            1.0000      
+
+---- VAR Nf  Personal final del proyecto n.
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1          .            10.0000        +INF            EPS         
+p2          .            10.0000        +INF            EPS         
+p3          .            10.0000        +INF            EPS         
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR z                 -INF           36.0000        +INF             .          
+
+  z  Variable de la funci贸n objetivo
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/26/20 19:40:49 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     60 VARIABLE z.L                   =       36.000  Variable de la funci贸n objetivo
+
+----     62 VARIABLE Nf.L  Personal final del proyecto n.
+
+p1 10.000,    p2 10.000,    p3 10.000
+
+
+
+EXECUTION TIME       =        0.047 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
+
+
+USER: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
+      Universidad de los Andes, Colombia                       DL014815
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms
+Output     C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.lst
