@@ -4,9 +4,10 @@
 
 Scalar
     a Tiempo de adaptacion de un nuevo integrante al proyecto /2/
-    c Constante de adelanto del proyecto. /3/
-    m Adelanto minimo para cualquier proyecto. /1/
+    c Constante de adelanto del proyecto. /4/
+    m Adelanto minimo para cualquier proyecto. /0/
     N1 Personal inicial del equipo de software. /10/
+    Per Personal máximo agregado    /3/
     ;
 ***Sets***************************************************
 
@@ -27,10 +28,10 @@ parameter Ni(proyectos) Personal inicial del proyecto n.
 $offtext
 
 parameter R(proyectos) Retraso máximo que puede tener el proyecto n.
-    /p1 2, p2 2, p3 2/;
+    /p1 4, p2 2, p3 2/;
 $ontext
 parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
-    /p1 0, p2 0, p3 0/;
+    /p1 1, p2 0, p3 0/;
 $offtext
 
 ***Variables*********************************************
@@ -68,6 +69,8 @@ restPersonalInicial(proyectos) El personal inicial del proyecto 1+i es igual a N
 
 restconcordancia(proyectos) La diferencia entre el personal final y el inicial de un proyecto es 0 cuando el periodo en que se agrega personal es 0.
 
+restPer(proyectos)
+
 ;
 
 funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
@@ -78,25 +81,28 @@ tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (N
 
 restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
 
-restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) - 1;
+restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) ;
 
 restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. T(proyectos)- P(proyectos) =g= m;
 
 restPersonal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
 
-restAgregacionMaximaPersonal(proyectos) .. B(proyectos)=l=(T(proyectos)*(2/3));
+restAgregacionMaximaPersonal(proyectos) .. B(proyectos)=l=(T(proyectos)*(1/3));
 
 restPersonalInicial1(proyectos)$(ord(proyectos)=1) .. Ni(proyectos) =e= N1; 
 
-restPersonalInicial(proyectos)$(ord(proyectos)<>1).. Ni(proyectos) =e= Nf(proyectos-1);
+restPersonalInicial(proyectos)$(ord(proyectos)<>1).. Ni(proyectos) =e= Nf('p1');
 
 restconcordancia(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= B(proyectos)*1000;
+
+restPer(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= Per;
 
 *Option Subsystems;
 *$ontext
 Model model1 /all/;
 
 *option minlp = CONOPT ;
+*option mip = CPLEX;
 
 solve model1 using minlp minimizing z;
 
@@ -109,4 +115,6 @@ Display Nf.l;
 Display B.l;
 
 Display P.l;
+
+
 *$offtext

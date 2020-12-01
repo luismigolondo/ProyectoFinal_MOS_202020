@@ -1,4 +1,4 @@
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/27/20 19:21:48 Page 1
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/30/20 13:53:28 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -9,114 +9,122 @@ C o m p i l a t i o n
    4   
    5  Scalar
    6      a Tiempo de adaptacion de un nuevo integrante al proyecto /2/
-   7      c Constante de adelanto del proyecto. /3/
-   8      m Adelanto minimo para cualquier proyecto. /1/
+   7      c Constante de adelanto del proyecto. /4/
+   8      m Adelanto minimo para cualquier proyecto. /0/
    9      N1 Personal inicial del equipo de software. /10/
-  10      ;
-  11  ***Sets***************************************************
-  12   
-  13  Set proyectos Proyectos del problema
-  14   /p1*p3/;
-  15   
-  16  Set proyectosMas1 Proyectos del problema sin incluir el primero.
-  17   /p2*p3/;
-  18   
-  19  ***Parametros      ****************************
-  20   
-  21  parameter T(proyectos) Tiempo inicial requerido para cumplir el proyecto n.
-  22      /p1 10, p2 12 , p3 14/;
-  23   
+  10      Per Personal máximo agregado    /3/
+  11      ;
+  12  ***Sets***************************************************
+  13   
+  14  Set proyectos Proyectos del problema
+  15   /p1*p3/;
+  16   
+  17  Set proyectosMas1 Proyectos del problema sin incluir el primero.
+  18   /p2*p3/;
+  19   
+  20  ***Parametros      ****************************
+  21   
+  22  parameter T(proyectos) Tiempo inicial requerido para cumplir el proyecto n.
+  23      /p1 10, p2 12 , p3 14/;
+  24   
       parameter Ni(proyectos) Personal inicial del proyecto n.
           /p1 10, p2 10, p3 10/;
-  28   
-  29  parameter R(proyectos) Retraso máximo que puede tener el proyecto n.
-  30      /p1 2, p2 2, p3 2/;
+  29   
+  30  parameter R(proyectos) Retraso máximo que puede tener el proyecto n.
+  31      /p1 4, p2 2, p3 2/;
       parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
-          /p1 0, p2 0, p3 0/;
-  35   
-  36  ***Variables*********************************************
-  37  Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
-  38   
-  39  Integer variable Nf(proyectos) Personal final del proyecto n.
-  40   
-  41  Integer variable B(proyectos) Periodo en que se agrega personal al proyecto n.
-  42   
-  43  Integer variable Ni(proyectos) Personal inicial del proyecto n.
-  44   
-  45  variable z Variable de la función objetivo
-  46   
-  47  Equations
-  48   
-  49  funcObjetivo Función objetivo del problema
-  50   
-  51  tiempoFinal(proyectos) Tiempo final de cada proyecto
-  52   
-  53  tiempoFinalN1(proyectos) Tiempo final de cada proyecto mas de N1.
-  54   
-  55  restPersonalFinal(proyectos) Restricción de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
-  56   
-  57  restRetrasoMaximo(proyectos) Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
-  58   
-  59  restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
-  60   
-  61  restPersonal(proyectos) Restriccion para que el personal final sea mayor o igual que el inicial.
-  62   
-  63  restAgregacionMaximaPersonal(proyectos) Restricción que indica que se puede agregar personal en el último tercio del proyecto.
-  64   
-  65  restPersonalInicial1(proyectos) El personal inicial del proyecto 1 es igual a N1
-  66   
-  67  restPersonalInicial(proyectos) El personal inicial del proyecto 1+i es igual a Nfi
-  68   
-  69  restconcordancia(proyectos)
-  70   
-  71  ;
-  72   
-  73  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
-  74   
-  75  tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni(proyectos-1))*c;
-  76   
-  77  tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-N1)*(a+B(proyectos));
-  78   
-  79  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
-  80   
-  81  restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) - 1;
-  82   
-  83  restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. T(proyectos)- P(proyectos) =g= m;
-  84   
-  85  restPersonal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
-  86   
-  87  restAgregacionMaximaPersonal(proyectos) .. B(proyectos)=l=(T(proyectos)*(2/3));
-  88   
-  89  restPersonalInicial1(proyectos)$(ord(proyectos)=1) .. Ni(proyectos) =e= N1;
-  90   
-  91  restPersonalInicial(proyectos)$(ord(proyectos)<>1).. Ni(proyectos) =e= Nf(proyectos-1);
-  92   
-  93  restconcordancia(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= B(proyectos)*1000;
-  94   
-  95  *Option Subsystems;
-  96  *$ontext
-  97  Model model1 /all/;
-  98   
-  99  *option minlp = CONOPT ;
- 100   
- 101  solve model1 using minlp minimizing z;
- 102   
- 103  Display z.l;
- 104   
- 105  Display Ni.l;
+          /p1 1, p2 0, p3 0/;
+  36   
+  37  ***Variables*********************************************
+  38  Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
+  39   
+  40  Integer variable Nf(proyectos) Personal final del proyecto n.
+  41   
+  42  Integer variable B(proyectos) Periodo en que se agrega personal al proyecto n.
+  43   
+  44  Integer variable Ni(proyectos) Personal inicial del proyecto n.
+  45   
+  46  variable z Variable de la función objetivo
+  47   
+  48  Equations
+  49   
+  50  funcObjetivo Función objetivo del problema
+  51   
+  52  tiempoFinal(proyectos) Tiempo final de cada proyecto
+  53   
+  54  tiempoFinalN1(proyectos) Tiempo final de cada proyecto mas de N1.
+  55   
+  56  restPersonalFinal(proyectos) Restricción de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
+  57   
+  58  restRetrasoMaximo(proyectos) Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
+  59   
+  60  restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
+  61   
+  62  restPersonal(proyectos) Restriccion para que el personal final sea mayor o igual que el inicial.
+  63   
+  64  restAgregacionMaximaPersonal(proyectos) Restricción que indica que se puede agregar personal en el último tercio del proyecto.
+  65   
+  66  restPersonalInicial1(proyectos) El personal inicial del proyecto 1 es igual a N1
+  67   
+  68  restPersonalInicial(proyectos) El personal inicial del proyecto 1+i es igual a Nfi
+  69   
+  70  restconcordancia(proyectos) La diferencia entre el personal final y el inicial de un proyecto es 0 cuando el periodo en que se agrega personal es 0.
+  71   
+  72  restPer(proyectos)
+  73   
+  74  ;
+  75   
+  76  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
+  77   
+  78  tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni(proyectos-1))*c;
+  79   
+  80  tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-N1)*(a+B(proyectos));
+  81   
+  82  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
+  83   
+  84  restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) ;
+  85   
+  86  restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. T(proyectos)- P(proyectos) =g= m;
+  87   
+  88  restPersonal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
+  89   
+  90  restAgregacionMaximaPersonal(proyectos) .. B(proyectos)=l=(T(proyectos)*(1/3));
+  91   
+  92  restPersonalInicial1(proyectos)$(ord(proyectos)=1) .. Ni(proyectos) =e= N1;
+  93   
+  94  restPersonalInicial(proyectos)$(ord(proyectos)<>1).. Ni(proyectos) =e= Nf('p1');
+  95   
+  96  restconcordancia(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= B(proyectos)*1000;
+  97   
+  98  restPer(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= Per;
+  99   
+ 100  *Option Subsystems;
+ 101  *$ontext
+ 102  Model model1 /all/;
+ 103   
+ 104  *option minlp = CONOPT ;
+ 105  *option mip = CPLEX;
  106   
- 107  Display Nf.l;
+ 107  solve model1 using minlp minimizing z;
  108   
- 109  Display B.l;
+ 109  Display z.l;
  110   
- 111  Display P.l;
- 112  *$offtext
+ 111  Display Ni.l;
+ 112   
+ 113  Display Nf.l;
+ 114   
+ 115  Display B.l;
+ 116   
+ 117  Display P.l;
+ 118   
+ 119   
+ 120  *$offtext
 
 
 COMPILATION TIME     =        0.000 SECONDS      3 MB  32.1.0 r75a5b5d WEX-WEI
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/27/20 19:21:48 Page 2
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/30/20 13:53:28 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE model1 Using MINLP From line 101
+Equation Listing    SOLVE model1 Using MINLP From line 107
 
 
 ---- funcObjetivo  =E=  Función objetivo del problema
@@ -126,9 +134,9 @@ funcObjetivo..  - P(p1) - P(p2) - P(p3) + z =E= 0 ; (LHS = 0)
 
 ---- tiempoFinal  =E=  Tiempo final de cada proyecto
 
-tiempoFinal(p2)..  P(p2) - (2)*Nf(p2) + (0)*B(p2) - 3*Ni(p1) + (5)*Ni(p2) =E= 12 ; (LHS = 0, INFES = 12 ****)
+tiempoFinal(p2)..  P(p2) - (2)*Nf(p2) + (0)*B(p2) - 4*Ni(p1) + (6)*Ni(p2) =E= 12 ; (LHS = 0, INFES = 12 ****)
      
-tiempoFinal(p3)..  P(p3) - (2)*Nf(p3) + (0)*B(p3) - 3*Ni(p2) + (5)*Ni(p3) =E= 14 ; (LHS = 0, INFES = 14 ****)
+tiempoFinal(p3)..  P(p3) - (2)*Nf(p3) + (0)*B(p3) - 4*Ni(p2) + (6)*Ni(p3) =E= 14 ; (LHS = 0, INFES = 14 ****)
      
 
 ---- tiempoFinalN1  =E=  Tiempo final de cada proyecto mas de N1.
@@ -147,18 +155,18 @@ restPersonalFinal(p3)..  Nf(p3) - Ni(p3) =G= 0 ; (LHS = 0)
 
 ---- restRetrasoMaximo  =L=  Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
 
-restRetrasoMaximo(p1)..  P(p1) =L= 11 ; (LHS = 0)
+restRetrasoMaximo(p1)..  P(p1) =L= 14 ; (LHS = 0)
      
-restRetrasoMaximo(p2)..  P(p2) =L= 13 ; (LHS = 0)
+restRetrasoMaximo(p2)..  P(p2) =L= 14 ; (LHS = 0)
      
-restRetrasoMaximo(p3)..  P(p3) =L= 15 ; (LHS = 0)
+restRetrasoMaximo(p3)..  P(p3) =L= 16 ; (LHS = 0)
      
 
 ---- restAdelantoMinimo  =G=  Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
 
-restAdelantoMinimo(p2)..  - P(p2) =G= -11 ; (LHS = 0)
+restAdelantoMinimo(p2)..  - P(p2) =G= -12 ; (LHS = 0)
      
-restAdelantoMinimo(p3)..  - P(p3) =G= -13 ; (LHS = 0)
+restAdelantoMinimo(p3)..  - P(p3) =G= -14 ; (LHS = 0)
      
 
 ---- restPersonal  =G=  Restriccion para que el personal final sea mayor o igual que el inicial.
@@ -172,11 +180,11 @@ restPersonal(p3)..  Nf(p3) - Ni(p3) =G= 0 ; (LHS = 0)
 
 ---- restAgregacionMaximaPersonal  =L=  Restricción que indica que se puede agregar personal en el último tercio del proyecto.
 
-restAgregacionMaximaPersonal(p1)..  B(p1) =L= 6.66666666666667 ; (LHS = 0)
+restAgregacionMaximaPersonal(p1)..  B(p1) =L= 3.33333333333333 ; (LHS = 0)
      
-restAgregacionMaximaPersonal(p2)..  B(p2) =L= 8 ; (LHS = 0)
+restAgregacionMaximaPersonal(p2)..  B(p2) =L= 4 ; (LHS = 0)
      
-restAgregacionMaximaPersonal(p3)..  B(p3) =L= 9.33333333333333 ; (LHS = 0)
+restAgregacionMaximaPersonal(p3)..  B(p3) =L= 4.66666666666667 ; (LHS = 0)
      
 
 ---- restPersonalInicial1  =E=  El personal inicial del proyecto 1 es igual a N1
@@ -188,10 +196,10 @@ restPersonalInicial1(p1)..  Ni(p1) =E= 10 ; (LHS = 0, INFES = 10 ****)
 
 restPersonalInicial(p2)..  - Nf(p1) + Ni(p2) =E= 0 ; (LHS = 0)
      
-restPersonalInicial(p3)..  - Nf(p2) + Ni(p3) =E= 0 ; (LHS = 0)
+restPersonalInicial(p3)..  - Nf(p1) + Ni(p3) =E= 0 ; (LHS = 0)
      
 
----- restconcordancia  =L=  
+---- restconcordancia  =L=  La diferencia entre el personal final y el inicial de un proyecto es 0 cuando el periodo en que se agrega personal es 0.
 
 restconcordancia(p1)..  Nf(p1) - 1000*B(p1) - Ni(p1) =L= 0 ; (LHS = 0)
      
@@ -199,9 +207,18 @@ restconcordancia(p2)..  Nf(p2) - 1000*B(p2) - Ni(p2) =L= 0 ; (LHS = 0)
      
 restconcordancia(p3)..  Nf(p3) - 1000*B(p3) - Ni(p3) =L= 0 ; (LHS = 0)
      
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/27/20 19:21:48 Page 3
+
+---- restPer  =L=  
+
+restPer(p1)..  Nf(p1) - Ni(p1) =L= 3 ; (LHS = 0)
+     
+restPer(p2)..  Nf(p2) - Ni(p2) =L= 3 ; (LHS = 0)
+     
+restPer(p3)..  Nf(p3) - Ni(p3) =L= 3 ; (LHS = 0)
+     
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/30/20 13:53:28 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE model1 Using MINLP From line 101
+Column Listing      SOLVE model1 Using MINLP From line 107
 
 
 ---- P  Tiempo final requerido para cumplir el proyecto n.
@@ -235,15 +252,17 @@ Nf(p1)
         1       restPersonalFinal(p1)
         1       restPersonal(p1)
        -1       restPersonalInicial(p2)
+       -1       restPersonalInicial(p3)
         1       restconcordancia(p1)
+        1       restPer(p1)
 
 Nf(p2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
       (-2)      tiempoFinal(p2)
         1       restPersonalFinal(p2)
         1       restPersonal(p2)
-       -1       restPersonalInicial(p3)
         1       restconcordancia(p2)
+        1       restPer(p2)
 
 Nf(p3)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
@@ -251,6 +270,7 @@ Nf(p3)
         1       restPersonalFinal(p3)
         1       restPersonal(p3)
         1       restconcordancia(p3)
+        1       restPer(p3)
 
 
 ---- B  Periodo en que se agrega personal al proyecto n.
@@ -278,28 +298,31 @@ B(p3)
 
 Ni(p1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-       -3       tiempoFinal(p2)
+       -4       tiempoFinal(p2)
        -1       restPersonalFinal(p1)
        -1       restPersonal(p1)
         1       restPersonalInicial1(p1)
        -1       restconcordancia(p1)
+       -1       restPer(p1)
 
 Ni(p2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-       (5)      tiempoFinal(p2)
-       -3       tiempoFinal(p3)
+       (6)      tiempoFinal(p2)
+       -4       tiempoFinal(p3)
        -1       restPersonalFinal(p2)
        -1       restPersonal(p2)
         1       restPersonalInicial(p2)
        -1       restconcordancia(p2)
+       -1       restPer(p2)
 
 Ni(p3)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-       (5)      tiempoFinal(p3)
+       (6)      tiempoFinal(p3)
        -1       restPersonalFinal(p3)
        -1       restPersonal(p3)
         1       restPersonalInicial(p3)
        -1       restconcordancia(p3)
+       -1       restPer(p3)
 
 
 ---- z  Variable de la función objetivo
@@ -308,38 +331,38 @@ z
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       funcObjetivo
 
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/27/20 19:21:48 Page 4
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/30/20 13:53:28 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE model1 Using MINLP From line 101
+Model Statistics    SOLVE model1 Using MINLP From line 107
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS           24
+BLOCKS OF EQUATIONS          12     SINGLE EQUATIONS           27
 BLOCKS OF VARIABLES           5     SINGLE VARIABLES           13
-NON ZERO ELEMENTS            51     NON LINEAR N-Z              8
+NON ZERO ELEMENTS            57     NON LINEAR N-Z              8
 DERIVATIVE POOL              20     CONSTANT POOL              18
 CODE LENGTH                  28     DISCRETE VARIABLES         12
 
 
 GENERATION TIME      =        0.000 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/27/20 19:21:48 Page 5
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/30/20 13:53:28 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE model1 Using MINLP From line 101
+Solution Report     SOLVE model1 Using MINLP From line 107
 
 
                S O L V E      S U M M A R Y
 
      MODEL   model1              OBJECTIVE  z
      TYPE    MINLP               DIRECTION  MINIMIZE
-     SOLVER  DICOPT              FROM LINE  101
+     SOLVER  DICOPT              FROM LINE  107
 
 **** SOLVER STATUS     1 Normal Completion         
-**** MODEL STATUS      5 Locally Infeasible        
-**** OBJECTIVE VALUE               35.0000
+**** MODEL STATUS      8 Integer Solution          
+**** OBJECTIVE VALUE               36.0000
 
- RESOURCE USAGE, LIMIT          0.015 10000000000.000
- ITERATION COUNT, LIMIT         5    2147483647
+ RESOURCE USAGE, LIMIT          0.125 10000000000.000
+ ITERATION COUNT, LIMIT       816    2147483647
  EVALUATION ERRORS              0             0
 -------------------------------------------------------------------------------
 Dicopt 2         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
@@ -363,32 +386,495 @@ CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
                     DK-2880 Bagsvaerd, Denmark
  
  
-    The model has 13 variables and 24 constraints
-    with 51 Jacobian elements, 8 of which are nonlinear.
+    The model has 13 variables and 27 constraints
+    with 57 Jacobian elements, 8 of which are nonlinear.
     The Hessian of the Lagrangian has 0 elements on the diagonal,
     5 elements below the diagonal, and 8 nonlinear variables.
  
                    Pre-triangular equations:   1
                    Post-triangular equations:  1
+                   Definitional equations:     1
  
  
- ** Infeasible solution. There are no superbasic variables.
+ ** Optimal solution. There are no superbasic variables.
  
  
  CONOPT time Total                            0.001 seconds
    of which: Function evaluations             0.000 =  0.0%
              1st Derivative evaluations       0.000 =  0.0%
  
---- DICOPT: Relaxed NLP is infeasible
 
-      The Relaxed NLP was infeasible. Please check your model and
-      make sure it solves correctly as an RMINLP model. Also
-      consider switching to a different RMINLP solver.
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
 
+3: *** Value Error Value brought in range for option "itlim" saw "2147483639"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.00sec (det. 0.09 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.02 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (7 iterations, 0 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+ ** An equation is inconsistent with other equations in the
+    pre-triangular part of the model.
+ 
+    Residual=           1.0000000
+    Tolerance (Rtnwtr)= 2.00000000E-08
+ 
+ 
+    The critical pre-triangular constraints and the variables they are
+    solved for in solution order:
+ 
+    Equation tiempoFinalN1(p1) has been solved with respect to the slack
+    After the last operation the residual is still 1
+ 
+ CONOPT time Total                            0.000 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483632"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.02sec (det. 0.79 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.05 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (29 iterations, 0 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+ ** An equation is inconsistent with other equations in the
+    pre-triangular part of the model.
+ 
+    Residual=           1.0000000
+    Tolerance (Rtnwtr)= 2.00000000E-08
+ 
+ 
+    The critical pre-triangular constraints and the variables they are
+    solved for in solution order:
+ 
+    Equation tiempoFinalN1(p1) has been solved with respect to the slack
+    After the last operation the residual is still 1
+ 
+ CONOPT time Total                            0.001 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483603"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.01sec (det. 2.28 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.08 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (61 iterations, 11 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+ ** An equation is inconsistent with other equations in the
+    pre-triangular part of the model.
+ 
+    Residual=           1.0000000
+    Tolerance (Rtnwtr)= 2.00000000E-08
+ 
+ 
+    The critical pre-triangular constraints and the variables they are
+    solved for in solution order:
+ 
+    Equation tiempoFinalN1(p1) has been solved with respect to the slack
+    After the last operation the residual is still 1
+ 
+ CONOPT time Total                            0.000 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+--- NOTICE : Too many infeasible NLP subproblems consider the use of infeasder option
+
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483542"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.02sec (det. 2.07 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.10 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (52 iterations, 0 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+ ** An equation is inconsistent with other equations in the
+    pre-triangular part of the model.
+ 
+    Residual=           1.0000000
+    Tolerance (Rtnwtr)= 2.00000000E-08
+ 
+ 
+    The critical pre-triangular constraints and the variables they are
+    solved for in solution order:
+ 
+    Equation tiempoFinalN1(p1) has been solved with respect to the slack
+    After the last operation the residual is still 1
+ 
+ CONOPT time Total                            0.001 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+--- NOTICE : Too many infeasible NLP subproblems consider the use of infeasder option
+
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483490"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.00sec (det. 2.73 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.02sec (det. 0.13 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (67 iterations, 0 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+ ** An equation is inconsistent with other equations in the
+    pre-triangular part of the model.
+ 
+    Residual=           1.0000000
+    Tolerance (Rtnwtr)= 2.00000000E-08
+ 
+ 
+    The critical pre-triangular constraints and the variables they are
+    solved for in solution order:
+ 
+    Equation tiempoFinalN1(p1) has been solved with respect to the slack
+    After the last operation the residual is still 1
+ 
+ CONOPT time Total                            0.000 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+--- NOTICE : Too many infeasible NLP subproblems consider the use of infeasder option
+
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483423"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.00sec (det. 4.29 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.16 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (79 iterations, 3 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+ ** An equation is inconsistent with other equations in the
+    pre-triangular part of the model.
+ 
+    Residual=           1.0000000
+    Tolerance (Rtnwtr)= 2.00000000E-08
+ 
+ 
+    The critical pre-triangular constraints and the variables they are
+    solved for in solution order:
+ 
+    Equation tiempoFinalN1(p1) has been solved with respect to the slack
+    After the last operation the residual is still 1
+ 
+ CONOPT time Total                            0.000 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+--- NOTICE : Too many infeasible NLP subproblems consider the use of infeasder option
+
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483344"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.00sec (det. 5.37 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.18 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (100 iterations, 11 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+ ** An equation is inconsistent with other equations in the
+    pre-triangular part of the model.
+ 
+    Residual=           1.0000000
+    Tolerance (Rtnwtr)= 2.00000000E-08
+ 
+ 
+    The critical pre-triangular constraints and the variables they are
+    solved for in solution order:
+ 
+    Equation tiempoFinalN1(p1) has been solved with respect to the slack
+    After the last operation the residual is still 1
+ 
+ CONOPT time Total                            0.000 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+--- NOTICE : Too many infeasible NLP subproblems consider the use of infeasder option
+
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483244"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.02sec (det. 8.74 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.22 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (193 iterations, 31 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+                   Pre-triangular equations:   27
+                   Post-triangular equations:  0
+ 
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+ 
+ CONOPT time Total                            0.000 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+--- NOTICE : Too many infeasible NLP subproblems consider the use of infeasder option
+
+
+IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+Cplex 12.10.0.0
+
+3: *** Value Error Value brought in range for option "itlim" saw "2147483047"
+3: *** Value Error    Value set to 2100000000
+Unable to load names.
+MIP status(101): integer optimal solution
+Cplex Time: 0.01sec (det. 9.56 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.24 ticks)
+Proven optimal solution.
+
+MIP Solution:           36.000000    (212 iterations, 33 nodes)
+Final Solve:            36.000000    (0 iterations)
+
+Best possible:          36.000000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+--- DICOPT: Setting up next NLP
+CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
+*** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T 3   version 3.17L
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+                   Pre-triangular equations:   27
+                   Post-triangular equations:  0
+ 
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+ 
+ CONOPT time Total                            0.001 seconds
+   of which: Function evaluations             0.000 =  0.0%
+             1st Derivative evaluations       0.000 =  0.0%
+ 
+
+--- NOTICE : Too many infeasible NLP subproblems consider the use of infeasder option
+
+--- DICOPT: Stopped on NLP worsening
+
+      The search was stopped because the objective function
+      of the NLP subproblems started to deteriorate.
+
+--- DICOPT: Best integer solution found: 36.000000
+
+**** ERRORS/WARNINGS IN EQUATION tiempoFinalN1(p1)
+     7 error(s): Inconsistency in pre-triangular part of model.
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- EQU funcObjet~          .              .              .             EPS         
+---- EQU funcObjet~          .              .              .             1.0000      
 
   funcObjetivo  Función objetivo del problema
 
@@ -396,97 +882,105 @@ CONOPT 3         32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p2        12.0000        12.0000        12.0000         0.0417      
-p3        14.0000        14.0000        14.0000         0.0278      
+p2        12.0000        12.0000        12.0000          .          
+p3        14.0000        14.0000        14.0000          .          
 
 ---- EQU tiempoFinalN1  Tiempo final de cada proyecto mas de N1.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        10.0000         9.8885        10.0000         0.0625 INFES
+p1        10.0000        10.0000        10.0000          .          
 
 ---- EQU restPersonalFinal  Restricción de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .             0.5556        +INF             .          
-p2          .             0.3333        +INF             .          
-p3          .              .            +INF            0.0556      
+p1          .              .            +INF             .          
+p2          .              .            +INF             .          
+p3          .              .            +INF             .          
 
 ---- EQU restRetrasoMaximo  Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        -INF           11.0000        11.0000        -0.0625      
-p2        -INF           11.0000        13.0000          .          
-p3        -INF           13.0000        15.0000          .          
+p1        -INF           10.0000        14.0000          .          
+p2        -INF           12.0000        14.0000          .          
+p3        -INF           14.0000        16.0000          .          
 
 ---- EQU restAdelantoMinimo  Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p2       -11.0000       -11.0000        +INF            0.0417      
-p3       -13.0000       -13.0000        +INF            0.0278      
+p2       -12.0000       -12.0000        +INF             .          
+p3       -14.0000       -14.0000        +INF             .          
 
 ---- EQU restPersonal  Restriccion para que el personal final sea mayor o igual que el inicial.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .             0.5556        +INF             .          
-p2          .             0.3333        +INF             .          
+p1          .              .            +INF             .          
+p2          .              .            +INF             .          
 p3          .              .            +INF             .          
 
 ---- EQU restAgregacionMaximaPersonal  Restricción que indica que se puede agregar personal en el último tercio del proyecto.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        -INF            0.0006         6.6667          .          
-p2        -INF            0.0003         8.0000          .          
-p3        -INF             .             9.3333          .          
+p1        -INF             .             3.3333          .          
+p2        -INF             .             4.0000          .          
+p3        -INF             .             4.6667          .          
 
 ---- EQU restPersonalInicial1  El personal inicial del proyecto 1 es igual a N1
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        10.0000        10.0000        10.0000         0.1250      
+p1        10.0000        10.0000        10.0000          .          
 
 ---- EQU restPersonalInicial  El personal inicial del proyecto 1+i es igual a Nfi
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p2          .              .              .            -0.1251      
-p3          .              .              .            -0.0834      
+p2          .              .              .              .          
+p3          .              .              .              .          
 
----- EQU restconcordancia  
+---- EQU restconcordancia  La diferencia entre el personal final y el inicial de un proyecto es 0 cuando el periodo en que se agrega personal es 0.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        -INF             .              .       -3.472454E-5      
-p2        -INF             .              .       -1.389661E-5      
-p3        -INF             .              .             EPS         
+p1        -INF             .              .              .          
+p2        -INF             .              .              .          
+p3        -INF             .              .              .          
+
+---- EQU restPer  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+p1        -INF             .             3.0000          .          
+p2        -INF             .             3.0000          .          
+p3        -INF             .             3.0000          .          
 
 ---- VAR P  Tiempo final requerido para cumplir el proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .            11.0000        +INF            EPS         
-p2          .            11.0000        +INF            EPS         
-p3          .            13.0000        +INF            EPS         
+p1          .            10.0000        +INF            1.0000      
+p2          .            12.0000        +INF            1.0000      
+p3          .            14.0000        +INF            1.0000      
 
 ---- VAR Nf  Personal final del proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .            10.5556        +INF            EPS         
-p2          .            10.8889        +INF            EPS         
-p3          .            10.8889        +INF            EPS         
+p1          .            10.0000        +INF            EPS         
+p2          .            10.0000        +INF            EPS         
+p3          .            10.0000        +INF            EPS         
 
 ---- VAR B  Periodo en que se agrega personal al proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .             0.0006        +INF            EPS         
-p2          .             0.0003        +INF            EPS         
+p1          .              .            +INF            EPS         
+p2          .              .            +INF            EPS         
 p3          .              .            +INF            EPS         
 
 ---- VAR Ni  Personal inicial del proyecto n.
@@ -494,52 +988,49 @@ p3          .              .            +INF            EPS
           LOWER          LEVEL          UPPER         MARGINAL
 
 p1          .            10.0000        +INF            EPS         
-p2          .            10.5556        +INF            EPS         
-p3          .            10.8889        +INF            EPS         
+p2          .            10.0000        +INF            EPS         
+p3          .            10.0000        +INF            EPS         
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- VAR z                 -INF           35.0000        +INF             .          
+---- VAR z                 -INF           36.0000        +INF             .          
 
   z  Variable de la función objetivo
 
 
 **** REPORT SUMMARY :        0     NONOPT
-                             1 INFEASIBLE (INFES)
-                    SUM          0.1115
-                    MAX          0.1115
-                    MEAN         0.1115
+                             0 INFEASIBLE
                              0  UNBOUNDED
-                             0     ERRORS
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/27/20 19:21:48 Page 6
+                             1     ERRORS ( ****)
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 11/30/20 13:53:28 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----    103 VARIABLE z.L                   =       35.000  Variable de la función objetivo
+----    109 VARIABLE z.L                   =       36.000  Variable de la función objetivo
 
-----    105 VARIABLE Ni.L  Personal inicial del proyecto n.
+----    111 VARIABLE Ni.L  Personal inicial del proyecto n.
 
-p1 10.000,    p2 10.556,    p3 10.889
-
-
-----    107 VARIABLE Nf.L  Personal final del proyecto n.
-
-p1 10.556,    p2 10.889,    p3 10.889
+p1 10.000,    p2 10.000,    p3 10.000
 
 
-----    109 VARIABLE B.L  Periodo en que se agrega personal al proyecto n.
+----    113 VARIABLE Nf.L  Personal final del proyecto n.
 
-p1 5.555926E-4,    p2 3.333333E-4
-
-
-----    111 VARIABLE P.L  Tiempo final requerido para cumplir el proyecto n.
-
-p1 11.000,    p2 11.000,    p3 13.000
+p1 10.000,    p2 10.000,    p3 10.000
 
 
+----    115 VARIABLE B.L  Periodo en que se agrega personal al proyecto n.
 
-EXECUTION TIME       =        0.046 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
+                      ( ALL       0.000 )
+
+
+----    117 VARIABLE P.L  Tiempo final requerido para cumplir el proyecto n.
+
+p1 10.000,    p2 12.000,    p3 14.000
+
+
+
+EXECUTION TIME       =        0.188 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
 
 
 USER: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
