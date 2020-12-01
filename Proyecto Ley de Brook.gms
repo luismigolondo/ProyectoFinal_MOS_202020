@@ -13,9 +13,7 @@ Scalar
 
 Set proyectos Proyectos del problema
  /p1*p3/;
- 
-Set proyectosMas1 Proyectos del problema sin incluir el primero.
- /p2*p3/;
+
  
 ***Parametros      ****************************
 
