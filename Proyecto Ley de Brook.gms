@@ -29,17 +29,17 @@ $offtext
 
 parameter R(proyectos) Retraso máximo que puede tener el proyecto n.
     /p1 4, p2 2, p3 2/;
-$ontext
+
 parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
     /p1 1, p2 0, p3 0/;
-$offtext
+
 
 ***Variables*********************************************
 Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
 
 Integer variable Nf(proyectos) Personal final del proyecto n.
 
-Integer variable B(proyectos) Periodo en que se agrega personal al proyecto n.
+*Integer variable B(proyectos) Periodo en que se agrega personal al proyecto n.
 
 Integer variable Ni(proyectos) Personal inicial del proyecto n.
 
@@ -69,13 +69,12 @@ restPersonalInicial(proyectos) El personal inicial del proyecto 1+i es igual a N
 
 restconcordancia(proyectos) La diferencia entre el personal final y el inicial de un proyecto es 0 cuando el periodo en que se agrega personal es 0.
 
-restPer(proyectos)
 
 ;
 
 funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
 
-tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni(proyectos-1))*c;
+tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni('p1'))*c;
 
 tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-N1)*(a+B(proyectos));
 
@@ -95,16 +94,15 @@ restPersonalInicial(proyectos)$(ord(proyectos)<>1).. Ni(proyectos) =e= Nf('p1');
 
 restconcordancia(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= B(proyectos)*1000;
 
-restPer(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= Per;
 
 *Option Subsystems;
 *$ontext
 Model model1 /all/;
 
 *option minlp = CONOPT ;
-*option mip = CPLEX;
+option mip = CPLEX;
 
-solve model1 using minlp minimizing z;
+solve model1 using mip minimizing z;
 
 Display z.l;
 
@@ -112,7 +110,7 @@ Display Ni.l;
 
 Display Nf.l;
 
-Display B.l;
+Display B;
 
 Display P.l;
 
