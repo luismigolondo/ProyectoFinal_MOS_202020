@@ -1,4 +1,4 @@
---- Job Proyecto Ley de Brook.gms Start 12/01/20 11:09:40 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
+--- Job Proyecto Ley de Brook.gms Start 12/01/20 11:11:01 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\32\gmsprmNT.txt
 --- GAMS Parameters defined
@@ -75,15 +75,15 @@ Cplex Time: 0.00sec (det. 0.01 ticks)
 
 Proven optimal solution.
 
-MIP Solution:           35.000000    (0 iterations, 0 nodes)
-Final Solve:            35.000000    (0 iterations)
+MIP Solution:           31.000000    (0 iterations, 0 nodes)
+Final Solve:            31.000000    (0 iterations)
 
-Best possible:          35.000000
+Best possible:          31.000000
 Absolute gap:            0.000000
 Relative gap:            0.000000
 
 --- Reading solution for model model1
---- Executing after solve: elapsed 0:00:00.048
+--- Executing after solve: elapsed 0:00:00.049
 --- Proyecto Ley de Brook.gms(115) 4 Mb
 *** Status: Normal completion
---- Job Proyecto Ley de Brook.gms Stop 12/01/20 11:09:40 elapsed 0:00:00.048
+--- Job Proyecto Ley de Brook.gms Stop 12/01/20 11:11:01 elapsed 0:00:00.049

@@ -1,41 +1,41 @@
 B 3 C o m p i l a t i o n
-B 127 Equation Listing    SOLVE model1 Using MIP From line 105
-D 130 funcObjetivo
-D 135 tiempoFinal
-D 142 tiempoFinalN1
-D 147 restPersonalFinal
-D 156 restRetrasoMaximo
-D 165 restAdelantoMinimo
-D 172 restPersonal
-D 181 restAgregacionMaximaPersonal
-D 186 restPersonalInicial1
-D 191 restPersonalInicial
-D 198 restconcordancia
-B 208 Column Listing      SOLVE model1 Using MIP From line 105
-E 211 P
-E 234 Nf
-E 260 Ni
-E 288 z
-B 296 Model Statistics    SOLVE model1 Using MIP From line 105
-B 309 Solution Report     SOLVE model1 Using MIP From line 105
-F 348 funcObjetivo
-F 352 tiempoFinal
-F 359 tiempoFinalN1
-F 365 restPersonalFinal
-F 373 restRetrasoMaximo
-F 381 restAdelantoMinimo
-F 388 restPersonal
-F 396 restAgregacionMaximaPersonal
-F 401 restPersonalInicial1
-F 407 restPersonalInicial
-F 414 restconcordancia
-G 422 P
-G 430 Nf
-G 438 Ni
-G 448 z
-B 458 E x e c u t i o n
-I 460 z
-I 461 Ni
-I 466 Nf
-I 471 B
-I 476 P
+B 125 Equation Listing    SOLVE model1 Using MIP From line 103
+D 128 funcObjetivo
+D 133 tiempoFinal
+D 140 tiempoFinalN1
+D 145 restPersonalFinal
+D 154 restRetrasoMaximo
+D 163 restAdelantoMinimo
+D 170 restPersonal
+D 179 restAgregacionMaximaPersonal
+D 184 restPersonalInicial1
+D 189 restPersonalInicial
+D 196 restconcordancia
+B 206 Column Listing      SOLVE model1 Using MIP From line 103
+E 209 P
+E 232 Nf
+E 258 Ni
+E 286 z
+B 294 Model Statistics    SOLVE model1 Using MIP From line 103
+B 307 Solution Report     SOLVE model1 Using MIP From line 103
+F 346 funcObjetivo
+F 350 tiempoFinal
+F 357 tiempoFinalN1
+F 363 restPersonalFinal
+F 371 restRetrasoMaximo
+F 379 restAdelantoMinimo
+F 386 restPersonal
+F 394 restAgregacionMaximaPersonal
+F 399 restPersonalInicial1
+F 405 restPersonalInicial
+F 412 restconcordancia
+G 420 P
+G 428 Nf
+G 436 Ni
+G 446 z
+B 456 E x e c u t i o n
+I 458 z
+I 459 Ni
+I 464 Nf
+I 469 B
+I 474 P

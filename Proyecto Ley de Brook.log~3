@@ -1,4 +1,4 @@
---- Job Proyecto Ley de Brook.gms Start 12/01/20 11:09:20 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
+--- Job Proyecto Ley de Brook.gms Start 12/01/20 11:09:40 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\32\gmsprmNT.txt
 --- GAMS Parameters defined
@@ -18,14 +18,14 @@ Licensee: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
           jd.mendozar@uniandes.edu.co, Julian David Mendoza Ruiz           
           Demo license for demonstration and instructional purposes only
 --- Starting compilation
---- Proyecto Ley de Brook.gms(120) 3 Mb
+--- Proyecto Ley de Brook.gms(118) 3 Mb
 --- Starting execution: elapsed 0:00:00.004
---- Proyecto Ley de Brook.gms(105) 4 Mb
+--- Proyecto Ley de Brook.gms(103) 4 Mb
 --- Generating MIP model model1
---- Proyecto Ley de Brook.gms(107) 4 Mb
----   24 rows  10 columns  48 non-zeroes
+--- Proyecto Ley de Brook.gms(105) 4 Mb
+---   21 rows  10 columns  42 non-zeroes
 ---   9 discrete-columns
---- Executing CPLEX (Solvelink=2): elapsed 0:00:00.009
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.010
 
 IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
 *** This solver runs with a demo license. No commercial use.
@@ -44,7 +44,7 @@ CPXPARAM_MIP_Display                             4
 CPXPARAM_MIP_Tolerances_AbsMIPGap                0
 CPXPARAM_WorkDir                                 "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci%f3n y optimizaci%f3n\Proyecto\ProyectoFinal_MOS_202020\225a\"
 Tried aggregator 2 times.
-MIP Presolve eliminated 17 rows and 3 columns.
+MIP Presolve eliminated 14 rows and 3 columns.
 Aggregator did 7 substitutions.
 All rows and columns eliminated.
 Presolve time = 0.00 sec. (0.02 ticks)
@@ -67,7 +67,7 @@ CPXPARAM_MIP_Display                             4
 CPXPARAM_MIP_Tolerances_AbsMIPGap                0
 CPXPARAM_WorkDir                                 "C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci%f3n y optimizaci%f3n\Proyecto\ProyectoFinal_MOS_202020\225a\"
 Tried aggregator 1 time.
-LP Presolve eliminated 24 rows and 10 columns.
+LP Presolve eliminated 21 rows and 10 columns.
 All rows and columns eliminated.
 Presolve time = 0.00 sec. (0.01 ticks)
 Fixed MIP status(1): optimal
@@ -83,7 +83,7 @@ Absolute gap:            0.000000
 Relative gap:            0.000000
 
 --- Reading solution for model model1
---- Executing after solve: elapsed 0:00:00.683
---- Proyecto Ley de Brook.gms(117) 4 Mb
+--- Executing after solve: elapsed 0:00:00.048
+--- Proyecto Ley de Brook.gms(115) 4 Mb
 *** Status: Normal completion
---- Job Proyecto Ley de Brook.gms Stop 12/01/20 11:09:21 elapsed 0:00:00.683
+--- Job Proyecto Ley de Brook.gms Stop 12/01/20 11:09:40 elapsed 0:00:00.048

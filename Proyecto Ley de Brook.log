@@ -1,4 +1,4 @@
---- Job Proyecto Ley de Brook.gms Start 12/01/20 11:22:59 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
+--- Job Proyecto Ley de Brook.gms Start 12/01/20 18:55:10 32.1.0 r75a5b5d WEX-WEI x86 64bit/MS Windows
 --- Applying:
     C:\GAMS\32\gmsprmNT.txt
 --- GAMS Parameters defined
@@ -18,14 +18,14 @@ Licensee: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
           jd.mendozar@uniandes.edu.co, Julian David Mendoza Ruiz           
           Demo license for demonstration and instructional purposes only
 --- Starting compilation
---- Proyecto Ley de Brook.gms(118) 3 Mb
---- Starting execution: elapsed 0:00:00.004
---- Proyecto Ley de Brook.gms(103) 4 Mb
+--- Proyecto Ley de Brook.gms(116) 3 Mb
+--- Starting execution: elapsed 0:00:00.005
+--- Proyecto Ley de Brook.gms(101) 4 Mb
 --- Generating MIP model model1
---- Proyecto Ley de Brook.gms(105) 4 Mb
+--- Proyecto Ley de Brook.gms(103) 4 Mb
 ---   21 rows  10 columns  42 non-zeroes
 ---   9 discrete-columns
---- Executing CPLEX (Solvelink=2): elapsed 0:00:00.009
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.010
 
 IBM ILOG CPLEX   32.1.0 r75a5b5d Released Jul 31, 2020 WEI x86 64bit/MS Window
 *** This solver runs with a demo license. No commercial use.
@@ -83,7 +83,7 @@ Absolute gap:            0.000000
 Relative gap:            0.000000
 
 --- Reading solution for model model1
---- Executing after solve: elapsed 0:00:00.048
---- Proyecto Ley de Brook.gms(115) 4 Mb
+--- Executing after solve: elapsed 0:00:00.049
+--- Proyecto Ley de Brook.gms(113) 4 Mb
 *** Status: Normal completion
---- Job Proyecto Ley de Brook.gms Stop 12/01/20 11:22:59 elapsed 0:00:00.048
+--- Job Proyecto Ley de Brook.gms Stop 12/01/20 18:55:10 elapsed 0:00:00.049

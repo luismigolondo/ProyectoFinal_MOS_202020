@@ -1,0 +1,40 @@
+B 3 C o m p i l a t i o n
+B 122 Equation Listing    SOLVE model1 Using MIP From line 98
+D 125 funcObjetivo
+D 130 tiempoFinal
+D 137 tiempoFinalN1
+D 142 restPersonalFinal
+D 151 restRetrasoMaximo
+D 160 restAdelantoMinimo
+D 167 restAgregacionMaximaPersonal
+D 172 restPersonalInicial1
+D 177 restPersonalInicial
+D 184 restconcordancia
+B 194 Column Listing      SOLVE model1 Using MIP From line 98
+E 197 P
+E 220 Nf
+E 243 Ni
+E 268 z
+B 276 Model Statistics    SOLVE model1 Using MIP From line 98
+B 289 Solution Report     SOLVE model1 Using MIP From line 98
+F 328 funcObjetivo
+F 332 tiempoFinal
+F 339 tiempoFinalN1
+F 345 restPersonalFinal
+F 353 restRetrasoMaximo
+F 361 restAdelantoMinimo
+F 368 restAgregacionMaximaPersonal
+F 373 restPersonalInicial1
+F 379 restPersonalInicial
+F 386 restconcordancia
+G 394 P
+G 402 Nf
+G 410 Ni
+G 420 z
+B 430 E x e c u t i o n
+I 432 z
+I 433 Ni
+I 438 Nf
+I 443 B
+I 448 T
+I 453 P

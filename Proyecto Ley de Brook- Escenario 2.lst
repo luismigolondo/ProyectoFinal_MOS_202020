@@ -1,4 +1,4 @@
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:55:10 Page 1
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:35:42 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -9,9 +9,9 @@ C o m p i l a t i o n
    4   
    5  Scalar
    6      a Tiempo de adaptacion de un nuevo integrante al proyecto /2/
-   7      c Constante de adelanto del proyecto. /4/
-   8      m Adelanto minimo para cualquier proyecto. /0/
-   9      N1 Personal inicial del equipo de software. /10/
+   7      c Constante de adelanto del proyecto. /2/
+   8      m Adelanto minimo para cualquier proyecto. /3/
+   9      N1 Personal inicial del equipo de software. /6/
   10      Per Personal m谩ximo agregado    /3/
   11      ;
   12  ***Sets***************************************************
@@ -23,106 +23,103 @@ C o m p i l a t i o n
   18  ***Parametros      ****************************
   19   
   20  parameter T(proyectos) Tiempo inicial requerido para cumplir el proyecto n.
-  21      /p1 10, p2 12 , p3 14/;
+  21      /p1 8, p2 14 , p3 14/;
   22   
       parameter Ni(proyectos) Personal inicial del proyecto n.
           /p1 10, p2 10, p3 10/;
   27   
   28  parameter R(proyectos) Retraso m谩ximo que puede tener el proyecto n.
-  29      /p1 4, p2 2, p3 2/;
-  30   
-  31  parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
-  32      /p1 1, p2 0, p3 0/;
+  29      /p1 6, p2 2, p3 2/;
+  30  parameter B(proyectos) Periodo en que se agrega personal al proyecto n.
+  31      /p1 1, p2 0, p3 0/;
+  32   
   33   
-  34   
-  35  ***Variables*********************************************
-  36  Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
-  37   
-  38  Integer variable Nf(proyectos) Personal final del proyecto n.
-  39   
-  40  *Integer variable B(proyectos) Periodo en que se agrega personal al proyecto n.
-  41   
-  42  Integer variable Ni(proyectos) Personal inicial del proyecto n.
-  43   
-  44  variable z Variable de la funci贸n objetivo
-  45   
-  46  Equations
-  47   
-  48  funcObjetivo Funci贸n objetivo del problema
-  49   
-  50  tiempoFinal(proyectos) Tiempo final de cada proyecto
-  51   
-  52  tiempoFinalN1(proyectos) Tiempo final de cada proyecto mas de N1.
-  53   
-  54  restPersonalFinal(proyectos) Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
-  55   
-  56  restRetrasoMaximo(proyectos) Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
-  57   
-  58  restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
-  59   
-  60  restPersonal(proyectos) Restriccion para que el personal final sea mayor o igual que el inicial.
-  61   
-  62  restAgregacionMaximaPersonal(proyectos) Restricci贸n que indica que se puede agregar personal en el 煤ltimo tercio del proyecto.
-  63   
-  64  restPersonalInicial1(proyectos) El personal inicial del proyecto 1 es igual a N1
-  65   
-  66  restPersonalInicial(proyectos) El personal inicial del proyecto 1+i es igual a Nfi
+  34  ***Variables*********************************************
+  35  Integer variable P(proyectos) Tiempo final requerido para cumplir el proyecto n.
+  36   
+  37  Integer variable Nf(proyectos) Personal final del proyecto n.
+  38   
+  39  *Integer variable B(proyectos) Periodo en que se agrega personal al proyecto n.
+  40   
+  41  Integer variable Ni(proyectos) Personal inicial del proyecto n.
+  42   
+  43  variable z Variable de la funci贸n objetivo
+  44   
+  45  Equations
+  46   
+  47  funcObjetivo Funci贸n objetivo del problema
+  48   
+  49  tiempoFinal(proyectos) Tiempo final de cada proyecto
+  50   
+  51  tiempoFinalN1(proyectos) Tiempo final de cada proyecto mas de N1.
+  52   
+  53  restPersonalFinal(proyectos) Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
+  54   
+  55  restRetrasoMaximo(proyectos) Restriccion para que el tiempo final - inicial del proyecto sea menor que lo maximo autorizado.
+  56   
+  57  restAdelantoMinimo(proyectos) Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
+  58   
+  59  restAgregacionMaximaPersonal(proyectos) Restricci贸n que indica que se puede agregar personal en el 煤ltimo tercio del proyecto.
+  60   
+  61  restPersonalInicial1(proyectos) El personal inicial del proyecto 1 es igual a N1
+  62   
+  63  restPersonalInicial(proyectos) El personal inicial del proyecto 1+i es igual a Nfi
+  64   
+  65  restconcordancia(proyectos) La diferencia entre el personal final y el inicial de un proyecto es 0 cuando el periodo en que se agrega personal es 0.
+  66   
   67   
-  68  restconcordancia(proyectos) La diferencia entre el personal final y el inicial de un proyecto es 0 cuando el periodo en que se agrega personal es 0.
+  68  ;
   69   
-  70   
-  71  ;
-  72   
-  73  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
-  74   
-  75  tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni('p1'))*c;
-  76   
-  77  tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-N1)*(a+B(proyectos));
-  78   
-  79  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
-  80   
-  81  restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) ;
-  82   
-  83  restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. T(proyectos)- P(proyectos) =g= m;
-  84   
-  85  restPersonal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
-  86   
-  87  restAgregacionMaximaPersonal(proyectos) .. B(proyectos)=l=(T(proyectos)*(1/3));
-  88   
-  89  restPersonalInicial1(proyectos)$(ord(proyectos)=1) .. Ni(proyectos) =e= N1;
+  70  funcObjetivo ..  z =e= sum(proyectos, P(proyectos));
+  71   
+  72  tiempoFinal(proyectos)$(ord(proyectos)<>1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-Ni(proyectos))*(a+B(proyectos)) - (Ni(proyectos)-Ni('p1'))*c;
+  73   
+  74  tiempoFinalN1(proyectos)$(ord(proyectos)=1) .. P(proyectos) =e= T(proyectos)+ (Nf(proyectos)-N1)*(a+B(proyectos));
+  75   
+  76  restPersonalFinal(proyectos) .. Nf(proyectos) =g= Ni(proyectos);
+  77   
+  78  restRetrasoMaximo(proyectos) .. P(proyectos) - T(proyectos) =l= R(proyectos) ;
+  79   
+  80  restAdelantoMinimo(proyectos)$(ord(proyectos)<>1) .. T(proyectos)- P(proyectos) =g= m;
+  81   
+  82  restAgregacionMaximaPersonal(proyectos) .. B(proyectos)=l=(T(proyectos)*(1/3));
+  83   
+  84  restPersonalInicial1(proyectos)$(ord(proyectos)=1) .. Ni(proyectos) =e= N1;
+  85   
+  86  restPersonalInicial(proyectos)$(ord(proyectos)<>1).. Ni(proyectos) =e= Nf('p1');
+  87   
+  88  restconcordancia(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= B(proyectos)*1000;
+  89   
   90   
-  91  restPersonalInicial(proyectos)$(ord(proyectos)<>1).. Ni(proyectos) =e= Nf('p1');
-  92   
-  93  restconcordancia(proyectos) .. Nf(proyectos)-Ni(proyectos) =l= B(proyectos)*1000;
+  91  *Option Subsystems;
+  92  *$ontext
+  93  Model model1 /all/;
   94   
-  95   
-  96  *Option Subsystems;
-  97  *$ontext
-  98  Model model1 /all/;
+  95  *option minlp = CONOPT ;
+  96  option mip = CPLEX;
+  97   
+  98  solve model1 using mip minimizing z;
   99   
- 100  *option minlp = CONOPT ;
- 101  option mip = CPLEX;
- 102   
- 103  solve model1 using mip minimizing z;
- 104   
- 105  Display z.l;
- 106   
- 107  Display Ni.l;
- 108   
- 109  Display Nf.l;
- 110   
- 111  Display B;
+ 100  Display z.l;
+ 101   
+ 102  Display Ni.l;
+ 103   
+ 104  Display Nf.l;
+ 105   
+ 106  Display B;
+ 107   
+ 108  Display T;
+ 109   
+ 110  Display P.l;
+ 111   
  112   
- 113  Display P.l;
- 114   
- 115   
- 116  *$offtext
+ 113  *$offtext
 
 
 COMPILATION TIME     =        0.000 SECONDS      3 MB  32.1.0 r75a5b5d WEX-WEI
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:55:10 Page 2
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:35:42 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE model1 Using MIP From line 103
+Equation Listing    SOLVE model1 Using MIP From line 98
 
 
 ---- funcObjetivo  =E=  Funci贸n objetivo del problema
@@ -132,14 +129,14 @@ funcObjetivo..  - P(p1) - P(p2) - P(p3) + z =E= 0 ; (LHS = 0)
 
 ---- tiempoFinal  =E=  Tiempo final de cada proyecto
 
-tiempoFinal(p2)..  P(p2) - 2*Nf(p2) - 4*Ni(p1) + 6*Ni(p2) =E= 12 ; (LHS = 0, INFES = 12 ****)
+tiempoFinal(p2)..  P(p2) - 2*Nf(p2) - 2*Ni(p1) + 4*Ni(p2) =E= 14 ; (LHS = 0, INFES = 14 ****)
      
-tiempoFinal(p3)..  P(p3) - 2*Nf(p3) - 4*Ni(p1) + 6*Ni(p3) =E= 14 ; (LHS = 0, INFES = 14 ****)
+tiempoFinal(p3)..  P(p3) - 2*Nf(p3) - 2*Ni(p1) + 4*Ni(p3) =E= 14 ; (LHS = 0, INFES = 14 ****)
      
 
 ---- tiempoFinalN1  =E=  Tiempo final de cada proyecto mas de N1.
 
-tiempoFinalN1(p1)..  P(p1) - 3*Nf(p1) =E= -20 ; (LHS = 0, INFES = 20 ****)
+tiempoFinalN1(p1)..  P(p1) - 3*Nf(p1) =E= -10 ; (LHS = 0, INFES = 10 ****)
      
 
 ---- restPersonalFinal  =G=  Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
@@ -155,25 +152,16 @@ restPersonalFinal(p3)..  Nf(p3) - Ni(p3) =G= 0 ; (LHS = 0)
 
 restRetrasoMaximo(p1)..  P(p1) =L= 14 ; (LHS = 0)
      
-restRetrasoMaximo(p2)..  P(p2) =L= 14 ; (LHS = 0)
+restRetrasoMaximo(p2)..  P(p2) =L= 16 ; (LHS = 0)
      
 restRetrasoMaximo(p3)..  P(p3) =L= 16 ; (LHS = 0)
      
 
 ---- restAdelantoMinimo  =G=  Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
 
-restAdelantoMinimo(p2)..  - P(p2) =G= -12 ; (LHS = 0)
+restAdelantoMinimo(p2)..  - P(p2) =G= -11 ; (LHS = 0)
      
-restAdelantoMinimo(p3)..  - P(p3) =G= -14 ; (LHS = 0)
-     
-
----- restPersonal  =G=  Restriccion para que el personal final sea mayor o igual que el inicial.
-
-restPersonal(p1)..  Nf(p1) - Ni(p1) =G= 0 ; (LHS = 0)
-     
-restPersonal(p2)..  Nf(p2) - Ni(p2) =G= 0 ; (LHS = 0)
-     
-restPersonal(p3)..  Nf(p3) - Ni(p3) =G= 0 ; (LHS = 0)
+restAdelantoMinimo(p3)..  - P(p3) =G= -11 ; (LHS = 0)
      
 
 ---- restAgregacionMaximaPersonal  =L=  Restricci贸n que indica que se puede agregar personal en el 煤ltimo tercio del proyecto.
@@ -183,7 +171,7 @@ restPersonal(p3)..  Nf(p3) - Ni(p3) =G= 0 ; (LHS = 0)
 
 ---- restPersonalInicial1  =E=  El personal inicial del proyecto 1 es igual a N1
 
-restPersonalInicial1(p1)..  Ni(p1) =E= 10 ; (LHS = 0, INFES = 10 ****)
+restPersonalInicial1(p1)..  Ni(p1) =E= 6 ; (LHS = 0, INFES = 6 ****)
      
 
 ---- restPersonalInicial  =E=  El personal inicial del proyecto 1+i es igual a Nfi
@@ -201,9 +189,9 @@ restconcordancia(p2)..  Nf(p2) - Ni(p2) =L= 0 ; (LHS = 0)
      
 restconcordancia(p3)..  Nf(p3) - Ni(p3) =L= 0 ; (LHS = 0)
      
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:55:10 Page 3
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:35:42 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE model1 Using MIP From line 103
+Column Listing      SOLVE model1 Using MIP From line 98
 
 
 ---- P  Tiempo final requerido para cumplir el proyecto n.
@@ -235,7 +223,6 @@ Nf(p1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -3       tiempoFinalN1(p1)
         1       restPersonalFinal(p1)
-        1       restPersonal(p1)
        -1       restPersonalInicial(p2)
        -1       restPersonalInicial(p3)
         1       restconcordancia(p1)
@@ -244,14 +231,12 @@ Nf(p2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -2       tiempoFinal(p2)
         1       restPersonalFinal(p2)
-        1       restPersonal(p2)
         1       restconcordancia(p2)
 
 Nf(p3)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
        -2       tiempoFinal(p3)
         1       restPersonalFinal(p3)
-        1       restPersonal(p3)
         1       restconcordancia(p3)
 
 
@@ -259,26 +244,23 @@ Nf(p3)
 
 Ni(p1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-       -4       tiempoFinal(p2)
-       -4       tiempoFinal(p3)
+       -2       tiempoFinal(p2)
+       -2       tiempoFinal(p3)
        -1       restPersonalFinal(p1)
-       -1       restPersonal(p1)
         1       restPersonalInicial1(p1)
        -1       restconcordancia(p1)
 
 Ni(p2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-        6       tiempoFinal(p2)
+        4       tiempoFinal(p2)
        -1       restPersonalFinal(p2)
-       -1       restPersonal(p2)
         1       restPersonalInicial(p2)
        -1       restconcordancia(p2)
 
 Ni(p3)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 0)
-        6       tiempoFinal(p3)
+        4       tiempoFinal(p3)
        -1       restPersonalFinal(p3)
-       -1       restPersonal(p3)
         1       restPersonalInicial(p3)
        -1       restconcordancia(p3)
 
@@ -289,33 +271,33 @@ z
                 (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
         1       funcObjetivo
 
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:55:10 Page 4
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:35:42 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE model1 Using MIP From line 103
+Model Statistics    SOLVE model1 Using MIP From line 98
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS           21
+BLOCKS OF EQUATIONS          10     SINGLE EQUATIONS           18
 BLOCKS OF VARIABLES           4     SINGLE VARIABLES           10
-NON ZERO ELEMENTS            42     DISCRETE VARIABLES          9
+NON ZERO ELEMENTS            36     DISCRETE VARIABLES          9
 
 
-GENERATION TIME      =        0.015 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:55:10 Page 5
+GENERATION TIME      =        0.203 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:35:42 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE model1 Using MIP From line 103
+Solution Report     SOLVE model1 Using MIP From line 98
 
 
                S O L V E      S U M M A R Y
 
      MODEL   model1              OBJECTIVE  z
      TYPE    MIP                 DIRECTION  MINIMIZE
-     SOLVER  CPLEX               FROM LINE  103
+     SOLVER  CPLEX               FROM LINE  98
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      1 Optimal                   
-**** OBJECTIVE VALUE               31.0000
+**** OBJECTIVE VALUE               34.0000
 
  RESOURCE USAGE, LIMIT          0.016 10000000000.000
  ITERATION COUNT, LIMIT         0    2147483647
@@ -327,16 +309,16 @@ Cplex 12.10.0.0
 Space for names approximately 0.00 Mb
 Use option 'names no' to turn use of names off
 MIP status(101): integer optimal solution
-Cplex Time: 0.00sec (det. 0.02 ticks)
+Cplex Time: 0.00sec (det. 0.01 ticks)
 Fixing integer variables, and solving final LP...
 Fixed MIP status(1): optimal
 Cplex Time: 0.00sec (det. 0.01 ticks)
 Proven optimal solution.
 
-MIP Solution:           31.000000    (0 iterations, 0 nodes)
-Final Solve:            31.000000    (0 iterations)
+MIP Solution:           34.000000    (0 iterations, 0 nodes)
+Final Solve:            34.000000    (0 iterations)
 
-Best possible:          31.000000
+Best possible:          34.000000
 Absolute gap:            0.000000
 Relative gap:            0.000000
 
@@ -351,20 +333,20 @@ Relative gap:            0.000000
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p2        12.0000        12.0000        12.0000          .          
+p2        14.0000        14.0000        14.0000          .          
 p3        14.0000        14.0000        14.0000          .          
 
 ---- EQU tiempoFinalN1  Tiempo final de cada proyecto mas de N1.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1       -20.0000       -20.0000       -20.0000          .          
+p1       -10.0000       -10.0000       -10.0000          .          
 
 ---- EQU restPersonalFinal  Restricci贸n de que el personal final debe ser mayor o igual al inicial para todo proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .             1.0000        +INF             .          
+p1          .             2.0000        +INF             .          
 p2          .              .            +INF             .          
 p3          .              .            +INF             .          
 
@@ -372,24 +354,16 @@ p3          .              .            +INF             .
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        -INF           13.0000        14.0000          .          
-p2        -INF            8.0000        14.0000          .          
+p1        -INF           14.0000        14.0000          .          
+p2        -INF           10.0000        16.0000          .          
 p3        -INF           10.0000        16.0000          .          
 
 ---- EQU restAdelantoMinimo  Restriccion para que el tiempo del proyecto ini-final cumpla con el adelanto minimo.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p2       -12.0000        -8.0000        +INF             .          
-p3       -14.0000       -10.0000        +INF             .          
-
----- EQU restPersonal  Restriccion para que el personal final sea mayor o igual que el inicial.
-
-          LOWER          LEVEL          UPPER         MARGINAL
-
-p1          .             1.0000        +INF             .          
-p2          .              .            +INF             .          
-p3          .              .            +INF             .          
+p2       -11.0000       -10.0000        +INF             .          
+p3       -11.0000       -10.0000        +INF             .          
 
 ---- EQU restAgregacionMaximaPersonal  Restricci贸n que indica que se puede agregar personal en el 煤ltimo tercio del proyecto.
 
@@ -400,7 +374,7 @@ p3          .              .            +INF             .
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        10.0000        10.0000        10.0000          .          
+p1         6.0000         6.0000         6.0000          .          
 
 ---- EQU restPersonalInicial  El personal inicial del proyecto 1+i es igual a Nfi
 
@@ -413,7 +387,7 @@ p3          .              .              .              .
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1        -INF            1.0000      1000.0000          .          
+p1        -INF            2.0000      1000.0000          .          
 p2        -INF             .              .              .          
 p3        -INF             .              .              .          
 
@@ -421,29 +395,29 @@ p3        -INF             .              .              .
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .            13.0000        +INF            1.0000      
-p2          .             8.0000        +INF            1.0000      
+p1          .            14.0000        +INF            1.0000      
+p2          .            10.0000        +INF            1.0000      
 p3          .            10.0000        +INF            1.0000      
 
 ---- VAR Nf  Personal final del proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .            11.0000        +INF            EPS         
-p2          .            11.0000        +INF            EPS         
-p3          .            11.0000        +INF            EPS         
+p1          .             8.0000        +INF            EPS         
+p2          .             8.0000        +INF            EPS         
+p3          .             8.0000        +INF            EPS         
 
 ---- VAR Ni  Personal inicial del proyecto n.
 
           LOWER          LEVEL          UPPER         MARGINAL
 
-p1          .            10.0000        +INF            EPS         
-p2          .            11.0000        +INF            EPS         
-p3          .            11.0000        +INF            EPS         
+p1          .             6.0000        +INF            EPS         
+p2          .             8.0000        +INF            EPS         
+p3          .             8.0000        +INF            EPS         
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- VAR z                 -INF           31.0000        +INF             .          
+---- VAR z                 -INF           34.0000        +INF             .          
 
   z  Variable de la funci贸n objetivo
 
@@ -451,35 +425,40 @@ p3          .            11.0000        +INF            EPS
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:55:10 Page 6
+GAMS 32.1.0  r75a5b5d Released Jul 31, 2020 WEX-WEI x86 64bit/MS Windows - 12/01/20 18:35:42 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
 
-----    105 VARIABLE z.L                   =       31.000  Variable de la funci贸n objetivo
+----    100 VARIABLE z.L                   =       34.000  Variable de la funci贸n objetivo
 
-----    107 VARIABLE Ni.L  Personal inicial del proyecto n.
+----    102 VARIABLE Ni.L  Personal inicial del proyecto n.
 
-p1 10.000,    p2 11.000,    p3 11.000
-
-
-----    109 VARIABLE Nf.L  Personal final del proyecto n.
-
-p1 11.000,    p2 11.000,    p3 11.000
+p1 6.000,    p2 8.000,    p3 8.000
 
 
-----    111 PARAMETER B  Periodo en que se agrega personal al proyecto n.
+----    104 VARIABLE Nf.L  Personal final del proyecto n.
+
+p1 8.000,    p2 8.000,    p3 8.000
+
+
+----    106 PARAMETER B  Periodo en que se agrega personal al proyecto n.
 
 p1 1.000
 
 
-----    113 VARIABLE P.L  Tiempo final requerido para cumplir el proyecto n.
+----    108 PARAMETER T  Tiempo inicial requerido para cumplir el proyecto n.
 
-p1 13.000,    p2  8.000,    p3 10.000
+p1  8.000,    p2 14.000,    p3 14.000
+
+
+----    110 VARIABLE P.L  Tiempo final requerido para cumplir el proyecto n.
+
+p1 14.000,    p2 10.000,    p3 10.000
 
 
 
-EXECUTION TIME       =        0.047 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
+EXECUTION TIME       =        1.078 SECONDS      4 MB  32.1.0 r75a5b5d WEX-WEI
 
 
 USER: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
@@ -488,5 +467,5 @@ USER: GAMS Demo license for Julian David Mendoza RuizG200812|0002CO-GEN
 
 **** FILE SUMMARY
 
-Input      C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.gms
-Output     C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook.lst
+Input      C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook- Escenario 2.gms
+Output     C:\Users\JulianDavid\Desktop\Andes\Semestre_VII\Modelado, simulaci髇 y optimizaci髇\Proyecto\ProyectoFinal_MOS_202020\Proyecto Ley de Brook- Escenario 2.lst
